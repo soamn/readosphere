@@ -90,6 +90,7 @@ export function PostsTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
+        
         {posts.map((post) => (
           <TableRow key={post.id}>
             <TableCell className="font-medium">{post.metaTitle}</TableCell>
