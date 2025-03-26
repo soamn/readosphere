@@ -1,7 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar";
 import Head from "next/head";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -11,8 +11,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Head>
       <SidebarProvider className="dark">
         <AppSidebar />
-        <main className="w-full bg-[#171717] p-1">
-          <SidebarTrigger className="text-white" />
+        <main className="w-full bg-zincy p-1 dark:text-white">
+          <SidebarTrigger />
           {children}
         </main>
         <Toaster />

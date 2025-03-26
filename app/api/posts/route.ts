@@ -31,12 +31,12 @@ export async function POST(req: Request) {
     let validUserId = userId;
     if (!userId) {
       const testUser = await prisma.user.upsert({
-        where: { email: "testuser@example.com" }, // Unique field to check
-        update: {}, // If found, do nothing
+        where: { email: "testuser@example.com" }, 
+        update: {}, 
         create: {
           name: "Test User",
           email: "testuser@example.com",
-          password: "testpassword", // Add a default password
+          password: "testpassword", 
         },
       });
       validUserId = testUser.id;

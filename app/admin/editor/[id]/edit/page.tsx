@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import Studio from "./studio";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import Studio from "../../studio";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -12,7 +13,10 @@ const PostSchema = z.object({
 });
 
 type PostData = z.infer<typeof PostSchema>;
-const page = () => {
+
+const Page = () => {
+  const searchParams = useSearchParams();
+  const postId = searchParams.get("id"); // Extract `id` from URL query params
   const [html, setHTML] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -23,17 +27,20 @@ const page = () => {
     tags?: string;
     content?: string;
   }>({});
-  const data = {
-    title,
-    description,
-    html,
-    tags,
-    errors,
-    setHTML,
-    setTitle,
-    setDescription,
-    setTags,
-  };
+
+  useEffect(() => {
+    if (postId) {
+      fetch(`/api/posts/${postId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setTitle(data.title || "");
+          setDescription(data.description || "");
+          setTags(data.tags || "");
+          setHTML(data.content || "");
+        })
+        .catch(() => toast("Error fetching post data"));
+    }
+  }, [postId]);
 
   const handleSave = async () => {
     const postData: PostData = { title, description, tags, content: html };
@@ -55,22 +62,40 @@ const page = () => {
     setErrors({});
 
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      });
+      const response = await fetch(
+        postId ? `/api/posts/${postId}` : "/api/posts",
+        {
+          method: postId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        }
+      );
 
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Failed to create post");
+      if (!response.ok) throw new Error(data.error || "Failed to save post");
 
-      toast("Post created successfully");
+      toast(postId ? "Post updated successfully" : "Post created successfully");
     } catch (error) {
-      toast("Error creating post");
+      toast("Error saving post");
     }
   };
 
-  return <Studio data={data} handleSave={handleSave} />;
+  return (
+    <Studio
+      data={{
+        title,
+        description,
+        html,
+        tags,
+        errors,
+        setHTML,
+        setTitle,
+        setDescription,
+        setTags,
+      }}
+      handleSave={handleSave}
+    />
+  );
 };
 
-export default page;
+export default Page;

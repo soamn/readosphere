@@ -3,7 +3,10 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function PATCH(req: Request, props: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  req: Request,
+  props: { params: Promise<{ id: string }> }
+) {
   const params = await props.params;
   try {
     const id = parseInt(params.id, 10);
@@ -20,14 +23,12 @@ export async function PATCH(req: Request, props: { params: Promise<{ id: string 
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    const updatedPost = await prisma.post.update({
+    const deletedPost = await prisma.post.delete({
       where: { id },
-      data: { published: !existingPost.published },
     });
 
     return NextResponse.json({
-      message: `Post ${updatedPost.published ? "published" : "unpublished"}`,
-      post: updatedPost,
+      message: `Post ${deletedPost.metaTitle} deleted successfully`,
     });
   } catch (error) {
     console.error("Error:", error);

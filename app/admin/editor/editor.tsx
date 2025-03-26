@@ -1,7 +1,7 @@
 "use client";
 
 import "@blocknote/core/fonts/inter.css";
-import { BlockNoteView, darkDefaultTheme, Theme } from "@blocknote/mantine";
+import { BlockNoteView, Theme } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export default function Editor({
     colors: {
       editor: {
         text: "white",
-        background: "black",
+        background: "#171717",
       },
     },
     borderRadius: 4,
@@ -28,7 +28,7 @@ export default function Editor({
       {
         type: "paragraph",
         content: [
-          "Start writing your blog here... ✍️",
+          "Start writing your contnet here...",
           {
             type: "text",
             text: "Bold text example.",
