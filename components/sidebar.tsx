@@ -1,4 +1,4 @@
-import { IceCream, Home, Inbox, Search, Settings } from "lucide-react";
+import { IceCream, Home, Settings, IceCream2, LayoutGrid } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,13 +15,18 @@ import {
 const items = [
   {
     title: "Dashboard",
-    url: "/admin/dashboard",
+    url: "/dashboard",
     icon: Home,
   },
   {
     title: "create",
-    url: "/admin/editor",
+    url: "/editor",
     icon: IceCream,
+  },
+  {
+    title: "Categories",
+    url: "/categories",
+    icon: LayoutGrid,
   },
   {
     title: "Settings",

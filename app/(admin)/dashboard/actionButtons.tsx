@@ -94,7 +94,11 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ postId, published }) => {
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-2 ">
-            <Button variant="destructive" onClick={deletePost}>
+            <Button
+              disabled={loading || isPending}
+              variant="destructive"
+              onClick={deletePost}
+            >
               <Trash2 />
             </Button>
           </div>

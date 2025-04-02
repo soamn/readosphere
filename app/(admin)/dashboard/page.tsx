@@ -14,8 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ActionButtons from "@/app/admin/dashboard/actionButtons";
+import ActionButtons from "@/app/(admin)/dashboard/actionButtons";
 import { Post } from "@/types/post";
+import Link from "next/link";
 
 const Dashboard = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
@@ -39,8 +40,10 @@ const Dashboard = async () => {
               <TableHead>Title</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Tags</TableHead>
-              <TableHead>Created At</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Created At</TableHead>
               <TableHead className="text-center">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -54,10 +57,16 @@ const Dashboard = async () => {
                   <TableCell>{post.metaDescription.slice(0, 20)}</TableCell>
                   <TableCell>{post.metaTags.slice(0, 20)}</TableCell>
                   <TableCell>
-                    {new Date(post.createdAt).toLocaleDateString()}
+                    {post.published ? "Published" : "Draft"}
                   </TableCell>
                   <TableCell>
-                    {post.published ? "Published" : "Draft"}
+                    <Link href={`/${post.slug}`} className="text-blue-500">
+                      {post.slug}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{post.category?.name ?? "null"}</TableCell>
+                  <TableCell>
+                    {new Date(post.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
                     <ActionButtons

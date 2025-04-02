@@ -15,8 +15,8 @@ export default function Editor({
   const darkTheme = {
     colors: {
       editor: {
-        text: "white",
-        background: "#171717",
+        text: "black",
+        background: "white",
       },
     },
     borderRadius: 4,

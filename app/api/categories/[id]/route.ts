@@ -1,0 +1,45 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: number }> }
+) {
+  const id = (await context.params).id;
+
+  const { name, description } = await req.json();
+
+  const categoryId = Number(id);
+  if (isNaN(categoryId)) {
+    return NextResponse.json({ error: "Invalid category ID" }, { status: 400 });
+  }
+
+  try {
+    const category = await prisma.category.update({
+      where: { id: categoryId },
+      data: { name, description },
+    });
+
+    return NextResponse.json(category);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to update category" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await prisma.category.delete({ where: { id: Number(params.id) } });
+    return NextResponse.json({ message: "Category deleted" });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete category" },
+      { status: 500 }
+    );
+  }
+}

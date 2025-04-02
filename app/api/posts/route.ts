@@ -1,12 +1,13 @@
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
 
 export async function GET() {
   try {
     const posts = await prisma.post.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        category: true,
+      },
     });
     return NextResponse.json(posts, { status: 200 });
   } catch (error) {
@@ -19,24 +20,23 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { title, description, tags, content, userId } = await req.json();
-
-    if (!title || !description || !tags || !content) {
+    const { title, description, tags, content, userId, slug, category } =
+      await req.json();
+    if (!title || !description || !tags || !content || !slug || !category) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
       );
     }
-
     let validUserId = userId;
     if (!userId) {
       const testUser = await prisma.user.upsert({
-        where: { email: "testuser@example.com" }, 
-        update: {}, 
+        where: { email: "testuser@example.com" },
+        update: {},
         create: {
           name: "Test User",
           email: "testuser@example.com",
-          password: "testpassword", 
+          password: "testpassword",
         },
       });
       validUserId = testUser.id;
@@ -56,7 +56,9 @@ export async function POST(req: Request) {
         metaDescription: description,
         metaTags: tags,
         content,
-        userId: validUserId,
+        slug: slug,
+        category: { connect: { id: Number(category) } },
+        user: { connect: { id: validUserId } },
       },
     });
 

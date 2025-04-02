@@ -128,3 +128,71 @@
 .bg-zincy {
   @apply bg-[#171717];
 }
+
+.bg-offWhite {
+  @apply bg-[#F9F6F1];
+}
+
+.text-primary {
+  @apply text-[#B6C4A2];
+  font-family: Oswald;
+}
+
+.bg-regular {
+  @apply bg-[#B6C4A2];
+}
+
+.text-secondary {
+  @apply text-[#A89C94];
+  font-family: Oswald;
+}
+
+.bg-secondary {
+  @apply bg-[#A89C94];
+}
+
+.text-body {
+  @apply text-[#2E2E2E];
+  font-family: Quattrocento;
+}
+
+.text-highlight {
+  @apply text-[#D7A98C];
+  font-family: Oswald;
+}
+
+.bg-highlight {
+  @apply bg-[#D7A98C];
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-[#B6C4A2] py-2;
+  font-family: Oswald;
+}
+.post h1 {
+  font-size: 50px;
+  font-weight: 700;
+}
+.post h2,
+h3,
+h4 {
+  font-size: x-large;
+}
+.post h5,
+h6 {
+  font-size: medium;
+}
+.post p {
+  @apply text-[#2E2E2E] text-xl;
+  font-family: Quattrocento;
+}
+
+.post a {
+  @apply text-[#D7A98C];
+  font-family: Oswald;
+}
