@@ -22,7 +22,7 @@ model Post {
   metaTitle       String    @db.VarChar(191)
   metaDescription String
   metaTags        String    @db.VarChar(191)
-  content         String    @db.VarChar(191)
+  content         String    @db.LongText
   userId          Int
   categoryId      Int?
   thumbnail       String?
