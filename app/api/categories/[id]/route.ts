@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
 
 export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: number }> }
 ) {
+  const token = getTokenFromRequest(req);
+  if (!token || !verifyAuthToken(token)) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   const id = (await context.params).id;
 
   const { name, description } = await req.json();
@@ -34,6 +39,10 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    const token = getTokenFromRequest(req);
+    if (!token || !verifyAuthToken(token)) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
     await prisma.category.delete({ where: { id: Number(params.id) } });
     return NextResponse.json({ message: "Category deleted" });
   } catch (error) {
@@ -43,3 +52,4 @@ export async function DELETE(
     );
   }
 }
+

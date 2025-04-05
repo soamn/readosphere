@@ -1,4 +1,11 @@
-import { IceCream, Home, Settings, IceCream2, LayoutGrid } from "lucide-react";
+import {
+  IceCream,
+  Home,
+  LayoutGrid,
+  LogOut,
+  DoorOpen,
+  HandHeart,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -11,36 +18,41 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { verifyAuthToken } from "@/utils/auth";
+import { cookies } from "next/headers";
 
 const items = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/admin/dashboard",
     icon: Home,
   },
   {
     title: "create",
-    url: "/editor",
+    url: "/admin/editor",
     icon: IceCream,
   },
   {
     title: "Categories",
-    url: "/categories",
+    url: "/admin/categories",
     icon: LayoutGrid,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Recommendations",
+    url: "/admin/recommendations",
+    icon: HandHeart,
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ user }: { user: any }) {
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Hello Admin</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg">
+            {" "}
+            {user?.name}
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -53,6 +65,17 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuItem key="logout">
+                <SidebarMenuButton
+                  asChild
+                  className="text-red-500 hover:text-red-500"
+                >
+                  <a href="/api/auth/logout">
+                    <DoorOpen />
+                    <span>Logout</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

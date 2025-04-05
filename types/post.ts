@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const PostSchema = z.object({
   id: z.number(),
+  title: z.string(),
   metaTitle: z.string(),
   metaDescription: z.string(),
   metaTags: z.string(),
@@ -12,6 +13,7 @@ const PostSchema = z.object({
     id: z.number(),
     desciption: z.string(),
   }),
+  thumbnail: z.string(),
   createdAt: z.string(),
   published: z.boolean(),
 });

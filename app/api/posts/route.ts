@@ -1,16 +1,44 @@
+import path from "path";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { verifyAuthToken } from "@/utils/auth";
+import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
+import { mkdir, writeFile } from "fs/promises";
+const isBrowserRequest = (req: NextRequest): boolean => {
+  const userAgent = req.headers.get("user-agent") || "";
+  const referer = req.headers.get("referer") || "";
+  return (
+    !req.headers.get("Authorization") &&
+    (!referer || userAgent.includes("Mozilla"))
+  );
+};
 
-export async function GET() {
+const authenticateUser = (req: NextRequest) => {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return null;
+
+  const authToken = authHeader.split("Bearer ")[1];
+  return verifyAuthToken(authToken);
+};
+
+export async function GET(req: NextRequest) {
+  if (isBrowserRequest(req)) {
+    return NextResponse.redirect(new URL("/not-found", req.url));
+  }
+
+  const user = authenticateUser(req);
+  if (!user)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
     const posts = await prisma.post.findMany({
       orderBy: { createdAt: "desc" },
-      include: {
-        category: true,
-      },
+      include: { category: true },
     });
+
     return NextResponse.json(posts, { status: 200 });
   } catch (error) {
+    console.error("Error fetching posts:", error);
     return NextResponse.json(
       { error: "Error fetching posts" },
       { status: 500 }
@@ -18,47 +46,96 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { title, description, tags, content, userId, slug, category } =
-      await req.json();
-    if (!title || !description || !tags || !content || !slug || !category) {
+    const {
+      title,
+      metaTitle,
+      metaDescription,
+      tags,
+      content,
+      slug,
+      category,
+      thumbnail,
+    } = await req.json();
+
+    if (
+      !title ||
+      !metaTitle ||
+      !metaDescription ||
+      !tags ||
+      !content ||
+      !slug ||
+      !category
+    ) {
       return NextResponse.json(
-        { error: "All fields are required" },
+        { error: "All fields  are required" },
         { status: 400 }
       );
     }
-    let validUserId = userId;
-    if (!userId) {
-      const testUser = await prisma.user.upsert({
-        where: { email: "testuser@example.com" },
-        update: {},
-        create: {
-          name: "Test User",
-          email: "testuser@example.com",
-          password: "testpassword",
-        },
-      });
-      validUserId = testUser.id;
-    } else {
-      const existingUser = await prisma.user.findUnique({
-        where: { id: userId },
-      });
 
-      if (!existingUser) {
-        return NextResponse.json({ error: "User not found" }, { status: 400 });
+    let savedThumbnailPath: string | null = null;
+
+    if (thumbnail) {
+      const matches = thumbnail.match(/^data:(.+);base64,(.+)$/);
+      if (!matches) {
+        return NextResponse.json(
+          { error: "Invalid image format" },
+          { status: 400 }
+        );
       }
+
+      const mimeType = matches[1];
+      const ext = mimeType.split("/")[1];
+      const buffer = Buffer.from(matches[2], "base64");
+
+      const resizedBuffer = await sharp(buffer)
+        .resize(1200, 630, { fit: "cover" })
+        .toFormat(ext === "jpg" ? "jpeg" : ext)
+        .toBuffer();
+
+      const now = new Date();
+      const folderName = `${now.getFullYear()}-${String(
+        now.getMonth() + 1
+      ).padStart(2, "0")}`;
+      const uploadDir = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        folderName
+      );
+      await mkdir(uploadDir, { recursive: true });
+
+      const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
+      const fileName = `${safeSlug}-${Date.now()}.${ext}`;
+      const filePath = path.join(uploadDir, fileName);
+
+      await writeFile(filePath, resizedBuffer);
+      savedThumbnailPath = `/uploads/${folderName}/${fileName}`;
+    }
+
+    const adminUser = await prisma.user.findFirst({
+      where: { email: "admin@example.com" },
+    });
+
+    if (!adminUser) {
+      return NextResponse.json(
+        { error: "Admin user not found" },
+        { status: 400 }
+      );
     }
 
     const newPost = await prisma.post.create({
       data: {
-        metaTitle: title,
-        metaDescription: description,
+        title,
+        metaTitle,
+        metaDescription,
         metaTags: tags,
         content,
-        slug: slug,
+        slug,
+        thumbnail: savedThumbnailPath,
         category: { connect: { id: Number(category) } },
-        user: { connect: { id: validUserId } },
+        user: { connect: { id: adminUser.id } },
       },
     });
 
@@ -71,3 +148,4 @@ export async function POST(req: Request) {
     );
   }
 }
+

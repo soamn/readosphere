@@ -8,15 +8,17 @@ import { AccordionItem } from "@radix-ui/react-accordion";
 import { Post } from "@/types/post";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ArrowRight } from "lucide-react";
 
 async function getCategories(): Promise<any[]> {
   try {
     const categories = await prisma.category.findMany({
       include: {
         posts: {
+          where: { published: true },
           select: {
             slug: true,
-            metaTitle: true,
+            title: true,
             category: {
               select: {
                 name: true,
@@ -60,14 +62,17 @@ export default async function CategoryMap() {
                 </div>
                 <AccordionContent className="p-1">
                   <p>{category.description}</p>
-                  <div className="flex gap-5 mt-5">
+                  <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-8 py-2">
                     {category.posts.map((post: Post, key: number) => (
-                      <div
+                      <Link
+                        href={post.slug}
                         key={key}
-                        className="p-2 ring-1 w-fit rounded-md font-bold text-highlight  hover:bg-secondary"
+                        title={post.title}
+                        className="p-2 ring-1 flex justify-between  rounded-sm font-bold   min-w-24 text-[#D7A98C] hover:bg-[#D7A98C] hover:text-white transition-all duration-200"
                       >
-                        <Link href={post.slug}>{post.metaTitle}</Link>
-                      </div>
+                        {post.title}
+                        <ArrowRight width={15} />
+                      </Link>
                     ))}
                   </div>
                 </AccordionContent>

@@ -3,13 +3,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
   id       Int     @id @default(autoincrement())
-  email    String  @unique
+  email    String  @unique @db.VarChar(191)
   name     String?
   password String
   posts    Post[]
@@ -17,23 +17,38 @@ model User {
 
 model Post {
   id              Int       @id @default(autoincrement())
-  slug            String    @unique
-  metaTitle       String
+  slug            String    @unique @db.VarChar(191)
+  title           String    @db.VarChar(191)
+  metaTitle       String    @db.VarChar(191)
   metaDescription String
-  metaTags        String
-  content         String
+  metaTags        String    @db.VarChar(191)
+  content         String    @db.VarChar(191)
   userId          Int
   categoryId      Int?
-  published       Boolean   @default(false)
+  thumbnail       String?
+  published       Boolean   @default(true)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   user            User      @relation(fields: [userId], references: [id])
-  category        Category? @relation(fields: [categoryId], references: [id])
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  @@index([title, metaTitle, metaTags])
 }
 
 model Category {
   id          Int     @id @default(autoincrement())
-  name        String  @unique
+  name        String  @unique @db.VarChar(191)
   description String?
   posts       Post[]
+}
+
+model Recommendation {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  link        String?
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

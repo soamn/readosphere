@@ -39,7 +39,7 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 w-full flex flex-col md:flex-row items-center z-50 px-4 md:px-32 justify-between bg-offWhite transition-all ${
+      className={`fixed top-0  w-full flex flex-col md:flex-row items-center z-50 px-4 md:px-32 justify-between bg-offWhite transition-all ${
         isScrolled ? "shadow-sm py-2" : "md:py-12 py-5"
       }`}
     >
@@ -52,7 +52,7 @@ const Header = () => {
       <div className="flex items-center space-x-4 md:space-x-10 relative w-full md:w-auto justify-between md:justify-end ">
         <Search />
         <button
-          className="flex space-x-1 items-center hover:bg-gray-200 cursor-pointer p-2 rounded-md"
+          className="flex space-x-1 items-center hover:bg-gray-200 cursor-pointer  mt-2 p-2 rounded-md"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <span className="hidden md:inline">Menu</span>
