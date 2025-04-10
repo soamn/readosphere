@@ -95,7 +95,7 @@ export async function POST(
         category: { connect: { id: categoryId } },
       },
     });
-    revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/${updatedPost.slug}`);
+    revalidatePath(`/${updatedPost.slug}`);
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {
     console.error("Error updating post:", error);

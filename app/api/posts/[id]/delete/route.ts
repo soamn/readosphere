@@ -25,7 +25,7 @@ export async function DELETE(
     const deletedPost = await prisma.post.delete({
       where: { id },
     });
-    revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/${deletedPost.slug}`);
+    revalidatePath(`/${deletedPost.slug}`);
     return NextResponse.json({
       message: `Post ${deletedPost.title} deleted successfully`,
     });
