@@ -2,9 +2,17 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Script from "next/script";
+import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export const revalidate = 7200;
 export const dynamicParams = true;
+
 export async function generateStaticParams() {
   const posts = await prisma.post.findMany({
     select: { slug: true },
@@ -51,9 +59,11 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
       category: true,
     },
   });
+
   if (!post) {
     return notFound();
   }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -68,15 +78,29 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     dateModified: post.updatedAt.toISOString(),
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://readosphere.com/blog/${post.slug}`,
+      "@id": `https://readosphere.com/${post.slug}`,
     },
   };
+
   return (
-    <div className="container mx-auto post">
+    <div className="container mx-auto post space-y-6">
+      <Breadcrumb className="list-none flex items-center gap-2  ">
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/">Home</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink>{post.title}</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
+
       <div
         className="prose"
         dangerouslySetInnerHTML={{ __html: post?.content || "" }}
       ></div>
+
       <Script
         type="application/ld+json"
         suppressHydrationWarning

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
-
 
 export async function DELETE(
   req: Request,
@@ -25,9 +25,9 @@ export async function DELETE(
     const deletedPost = await prisma.post.delete({
       where: { id },
     });
-
+    revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/${deletedPost.slug}`);
     return NextResponse.json({
-      message: `Post ${deletedPost.metaTitle} deleted successfully`,
+      message: `Post ${deletedPost.title} deleted successfully`,
     });
   } catch (error) {
     console.error("Error:", error);

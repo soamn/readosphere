@@ -52,7 +52,7 @@ export default function Editor({
       }
     );
 
-    onChange(htmlWithAlt.replace(/\n/g, "<br>"));
+    onChange(htmlWithAlt.replace(/<p>\s*<\/p>/g, "<br>"));
   };
 
   useEffect(() => {

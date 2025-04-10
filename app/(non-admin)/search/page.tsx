@@ -7,6 +7,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Head from "next/head";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 function SearchPageInner() {
   const searchParams = useSearchParams();
@@ -54,8 +60,14 @@ function SearchPageInner() {
           href={`https://gierlist.com/search?q=${encodeURIComponent(query)}`}
         />
       </Head>
-
       <div className="max-w-3xl mx-auto mt-10">
+        <Breadcrumb className="list-none flex items-center gap-2  ">
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <h1 className="text-2xl font-bold mb-4">
           Search Results for "{query}"
         </h1>

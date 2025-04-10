@@ -1,3 +1,8 @@
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@/components/ui/breadcrumb";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -20,6 +25,13 @@ const CategoryPage = async (context: { params: Promise<{ id: number }> }) => {
 
   return (
     <div className="p-4">
+      <Breadcrumb className="list-none flex items-center gap-2  ">
+        <BreadcrumbItem>
+          <BreadcrumbLink asChild>
+            <Link href="/">Home</Link>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <h1 className="text-2xl font-bold mb-4">
         Posts in Category {posts[0]?.category?.name}
       </h1>

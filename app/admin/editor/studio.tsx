@@ -18,6 +18,7 @@ import {
   SelectValue,
   SelectItem,
 } from "@/components/ui/select";
+import Footer from "@/app/(non-admin)/footer";
 
 const Editor = dynamic(() => import("../editor/editor"), {
   ssr: false,
@@ -317,11 +318,17 @@ export default function Studio({
                 <Maximize size={18} />
               )}
             </button>
-            <div className="container mx-auto post">
+            <div>
               <div
-                className="prose"
-                dangerouslySetInnerHTML={{ __html: html }}
-              ></div>
+                className="container mx-auto post overflow-scroll h-screen"
+                style={{ scrollbarWidth: "none" }}
+              >
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                ></div>
+                <Footer />
+              </div>
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>

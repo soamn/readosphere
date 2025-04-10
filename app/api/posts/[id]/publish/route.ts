@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
 
@@ -26,11 +27,13 @@ export async function PATCH(
       where: { id },
       data: { published: !existingPost.published },
     });
+    revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/${updatedPost.slug}`);
 
     return NextResponse.json({
       message: `Post ${updatedPost.published ? "published" : "unpublished"}`,
       post: updatedPost,
     });
+
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

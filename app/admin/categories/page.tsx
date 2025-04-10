@@ -53,7 +53,7 @@ const Page = () => {
   }, []);
 
   const handleSave = async () => {
-    if (!name.trim() || !description.trim()) return;
+    if (!name.trim()) return;
 
     setLoading(true);
     try {
@@ -77,7 +77,6 @@ const Page = () => {
           : [...prev, updatedCategory]
       );
 
-      // Reset and close modal
       resetForm();
     } catch (error) {
       console.error(error);
@@ -86,7 +85,6 @@ const Page = () => {
     }
   };
 
-  // Delete category
   const handleDelete = async (id: number) => {
     setDeletingId(id);
     try {
@@ -101,7 +99,6 @@ const Page = () => {
     }
   };
 
-  // Reset form and close modal
   const resetForm = () => {
     setName("");
     setDescription("");
@@ -198,12 +195,14 @@ const Page = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={loading}
+            className="selection:bg-white selection:text-black"
           />
           <Textarea
             placeholder="Enter category description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             disabled={loading}
+            className="selection:bg-white selection:text-black"
           />
           <Button disabled={loading} onClick={handleSave} className="mt-3">
             {loading ? "Saving..." : editCategory ? "Update" : "Create"}

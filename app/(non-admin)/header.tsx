@@ -40,13 +40,14 @@ const Header = () => {
   return (
     <header
       className={`fixed top-0  w-full flex flex-col md:flex-row items-center z-50 px-4 md:px-32 justify-between bg-offWhite transition-all ${
-        isScrolled ? "shadow-sm py-2" : "md:py-12 py-5"
+        isScrolled ? "shadow-sm py-2" : "md:py-12 py-5w"
       }`}
     >
-      <div className="text-xl md:text-2xl font-bold">
-        <Link href="/" className="text-secondary">
-          ReadOsphere.com
+      <div className="text-secondary font-bold flex flex-col">
+        <Link href="/" className=" text-xl md:text-2x">
+          ReadOsphere
         </Link>
+        <span className="text-xs">Stories, softly told</span>
       </div>
 
       <div className="flex items-center space-x-4 md:space-x-10 relative w-full md:w-auto justify-between md:justify-end ">

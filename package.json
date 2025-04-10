@@ -10,6 +10,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "deploy": "node server.cjs",
     "lint": "next lint"
   },
   "dependencies": {

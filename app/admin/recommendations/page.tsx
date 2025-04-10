@@ -256,31 +256,35 @@ const RecommendationPage = () => {
               {editRec ? "Edit Recommendation" : "Add Recommendation"}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 ">
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Input
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={loading}
+              className="selection:bg-white selection:text-black"
             />
             <Textarea
               placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={loading}
+              className="selection:bg-white selection:text-black"
             />
             <Input
               placeholder="Image URL"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               disabled={loading}
+              className="selection:bg-white selection:text-black"
             />
             <Input
               placeholder="Link (optional)"
               value={link}
               onChange={(e) => setLink(e.target.value)}
               disabled={loading}
+              className="selection:bg-white selection:text-black"
             />
             <div className="flex items-center gap-2">
               <Switch

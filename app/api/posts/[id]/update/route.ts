@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
+import { revalidatePath } from "next/cache";
 
 export async function POST(
   req: NextRequest,
@@ -40,7 +41,6 @@ export async function POST(
 
     let savedThumbnailPath: string | null = null;
 
-    // Only process thumbnail if it's a base64-encoded image
     const isBase64Image =
       typeof thumbnail === "string" && thumbnail.startsWith("data:image");
 
@@ -93,10 +93,9 @@ export async function POST(
         content,
         ...(savedThumbnailPath && { thumbnail: savedThumbnailPath }),
         category: { connect: { id: categoryId } },
-        updatedAt: new Date(),
       },
     });
-
+    revalidatePath(`${process.env.NEXT_PUBLIC_API_URL}/${updatedPost.slug}`);
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {
     console.error("Error updating post:", error);

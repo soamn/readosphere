@@ -5,6 +5,17 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar";
 import { Toaster } from "sonner";
 import { verifyAuthToken } from "@/utils/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Readosphere | Admin",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function AdminLayout({
   children,

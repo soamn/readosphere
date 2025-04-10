@@ -15,6 +15,7 @@ const PostSchema = z.object({
   }),
   thumbnail: z.string(),
   createdAt: z.string(),
+  updatedAt: z.string(),
   published: z.boolean(),
 });
 

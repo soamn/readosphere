@@ -62,7 +62,7 @@ export default async function CategoryMap() {
                 </div>
                 <AccordionContent className="p-1">
                   <p>{category.description}</p>
-                  <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-8 py-2">
+                  <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 py-2">
                     {category.posts.map((post: Post, key: number) => (
                       <Link
                         href={post.slug}

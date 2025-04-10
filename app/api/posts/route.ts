@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
     }
 
     const adminUser = await prisma.user.findFirst({
-      where: { email: "admin@example.com" },
+      where: { email: "admin@readosphere.com" },
     });
 
     if (!adminUser) {
@@ -148,4 +148,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-

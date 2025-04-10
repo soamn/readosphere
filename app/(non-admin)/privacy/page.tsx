@@ -1,5 +1,15 @@
+import { Metadata } from "next";
 import React from "react";
 
+export const metadata: Metadata = {
+  title: {
+    absolute: "Privacy",
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 export default function PrivacyPolicyPage() {
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
