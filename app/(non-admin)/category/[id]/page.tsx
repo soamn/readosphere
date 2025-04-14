@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import React from "react";
 
 const CategoryPage = async (context: { params: Promise<{ id: number }> }) => {
   const id = (await context.params).id;
+
   const posts = await prisma.post.findMany({
     where: {
       categoryId: Number(id),
@@ -19,33 +21,45 @@ const CategoryPage = async (context: { params: Promise<{ id: number }> }) => {
     },
   });
 
-  if (posts.length === 0) {
+  if (!posts || posts.length === 0) {
     return notFound();
   }
 
   return (
-    <div className="p-4">
-      <Breadcrumb className="list-none flex items-center gap-2  ">
+    <div className="w-full max-w-6xl mt-30 mx-auto px-4 sm:px-6 lg:px-10 py-16">
+      {/* Breadcrumb */}
+      <Breadcrumb className="list-none flex items-center gap-2 mb-6 ">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
+            <Link href="/" className="hover:underline">
+              Home
+            </Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <span className="font-medium ">{posts[0]?.category?.name}</span>
+        </BreadcrumbItem>
       </Breadcrumb>
-      <h1 className="text-2xl font-bold mb-4">
-        Posts in Category {posts[0]?.category?.name}
-      </h1>
 
-      <ul className="space-y-4">
+      {/* Category Title */}
+      <h1 className="text-7xl font-bold mb-10 ">{posts[0]?.category?.name}</h1>
+
+      {/* Post List */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {posts.map((post) => (
-          <li key={post.id} className="border p-4 rounded shadow">
-            <Link href={`/${post.slug}`}>
-              <h2 className="text-xl font-semibold">{post.title}</h2>
-              <p className="text-gray-600">{post.metaDescription}</p>
-            </Link>
-          </li>
+          <Link
+            href={`/${post.slug}`}
+            key={post.id}
+            className="border border-gray-200 hover:border-black rounded-2xl p-6 shadow-sm hover:shadow-md transition-all bg-white"
+          >
+            <h2 className="text-xl font-semibold text-black mb-2">
+              {post.title}
+            </h2>
+            <p className="text-gray-500 line-clamp-3">{post.metaDescription}</p>
+          </Link>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

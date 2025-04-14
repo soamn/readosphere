@@ -1,56 +1,56 @@
+import { MoveRight } from "lucide-react";
 import React from "react";
 
 const Hero = () => {
   return (
-    <section className="max-w-3xl mx-auto px-4">
-      <h1 className="text-3xl lg:text-5xl font-bold ">
-        Why I Started Readosphere
-      </h1>
-      <div className="p-4 font-bold text-secondary">
-        <span>Updated On | </span>
-        <time dateTime="2025-04-01">April 1, 2025</time>
-      </div>
-      <article className="text-xl">
-        <p className="mb-5">
-          <strong>
-            In a world that's always online, I found others constantly plugged
-            in—scrolling, refreshing, responding.
-          </strong>
-          <br></br> From the beginning, I made a conscious choice not to be
-          swept into that current. Yet, some days, I still find myself spending
-          more time on YouTube than I really need to.
-        </p>
-        <p className="mb-5">
-          Somewhere along the way—between work, travel, and the everyday rhythm
-          of adulting—I realized that’s not the version of life I want to look
-          back on. I want to retire with a book in my hand, lying on green
-          grass—something quieter. Something more personal.
-        </p>
-        <p className="mb-5">
-          Books and nature have always been that quiet, loyal friend for me.
-          Whether I need to reset, disconnect, learn something new, or just
-          unwind, I turn to reading not just for entertainment, but for
-          restoration—and most of all, for imagination.
-        </p>
-        <p className="mb-5">
-          Readosphere is born from that personal space of my imagination—where
-          stories meet self-care. It’s a place where I hope others can also find
-          comfort in the pages. For anyone who believes mental well-being can be
-          nurtured through stillness, wonder, and thoughtful escape—not through
-          30-second stimulation—this is for you.
-        </p>
-        <p className="mb-5">
-          This site is my way of weaving together the three things that have
-          helped me most: nature, books and calm. Especially now, when life
-          feels more digitized than ever, we all need a gentle reminder to pause
-          and mindfully reconnect—with ourselves and with the imagination that
-          move us. So, join me in curating a mindful space filled with books and
-          some nature inspired writings sorts—some for reading, some for
-          imagining, some for learning, and most of all, for slowing down and
-          simply being.
-        </p>
-      </article>
-    </section>
+    <>
+      <section className="w-full h-[50rem] relative overflow-hidden">
+        <img
+          src="/hero1.jpg"
+          alt="Mountain"
+          className="blur hover:blur-none w-full h-[50rem] object-cover select-none 
+         [mask-image:linear-gradient(to_bottom,_white,_transparent)]"
+        />
+
+        <div className="absolute w-full top-[40%] text-center cursor-pointer px-4">
+          <h1 className="flex flex-col text-white text-4xl sm:text-5xl md:text-6xl lg:text-8xl ">
+            <span className="font-extralight selection:bg-black/30 tracking-widest">
+              Rediscover the
+            </span>
+            <span className="font-extrabold selection:bg-black/30 tracking-widest py-4 sm:py-6 font-rakkas">
+              Beauty of Reading
+            </span>
+          </h1>
+        </div>
+      </section>
+
+      <section className="w-full flex flex-col lg:flex-row   space-x-20   mb-20 px-20">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-widest text-center lg:text-left">
+          Each word holds
+        </h2>
+
+        <div className="flex flex-col  mt-4 lg:mt-10 text-center lg:text-left ">
+          <p className="text-md md:text-2xl md:leading-10">
+            Inviting vou to immerse yourself <br />
+            in the rich tapestry of the words...
+          </p>
+
+          <div className="relative group w-full mt-6">
+            <a href="#" className="tracking-widest w-full flex text-3xl">
+              <span className=" w-full flex items-center">
+                <MoveRight className="ml-auto" />
+              </span>
+            </a>
+
+            <span className="absolute bottom-0 left-0 w-full h-[1px] bg-white transition-opacity duration-300 group-hover:opacity-0"></span>
+          </div>
+        </div>
+
+        <h2 className="flex-1 text-4xl sm:text-5xl md:text-6xl lg:text-8xl tracking-widest text-center lg:text-left mt-4 lg:mt-16 text-nowrap">
+          a story
+        </h2>
+      </section>
+    </>
   );
 };
 

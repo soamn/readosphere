@@ -48,6 +48,7 @@ const Dashboard = async () => {
               <TableHead>Meta Description</TableHead>
               <TableHead>Tags</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Is featured</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Created At</TableHead>
@@ -68,6 +69,9 @@ const Dashboard = async () => {
                     {post.published ? "Published" : "Draft"}
                   </TableCell>
                   <TableCell>
+                    {post.isFeatured ? "Featured" : "not featured"}
+                  </TableCell>
+                  <TableCell>
                     <Link href={`/${post.slug}`} className="text-blue-500">
                       {post.slug}
                     </Link>
@@ -80,6 +84,7 @@ const Dashboard = async () => {
                     <ActionButtons
                       postId={post.id}
                       published={post.published}
+                      isFeatured={post.isFeatured}
                     />
                   </TableCell>
                 </TableRow>

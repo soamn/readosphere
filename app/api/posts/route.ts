@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
       slug,
       category,
       thumbnail,
+      
     } = await req.json();
 
     if (

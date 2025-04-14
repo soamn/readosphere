@@ -83,8 +83,8 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   };
 
   return (
-    <div className="container mx-auto post space-y-6">
-      <Breadcrumb className="list-none flex items-center gap-2  ">
+    <div className="w-full max-w-6xl mx-auto post space-y-6 mt-50 px-6 lg:px-10">
+      <Breadcrumb className="list-none flex flex-wrap items-center gap-2">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
@@ -97,14 +97,14 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
       </Breadcrumb>
 
       <div
-        className="prose"
+        className="prose prose-sm sm:prose lg:prose-lg max-w-none"
         dangerouslySetInnerHTML={{ __html: post?.content || "" }}
       ></div>
 
       <Script
         type="application/ld+json"
         suppressHydrationWarning
-        key={"blog-jsonld"}
+        key="blog-jsonld"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </div>

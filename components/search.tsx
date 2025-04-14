@@ -2,17 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
+import { ArrowRight } from "lucide-react"; // if you're using lucide-react
 
 export function Search() {
-  const placeholders = [
-    "Best books to read this year?",
-    "Must-read classic novels?",
-    "What are some great sci-fi books?",
-    "Books similar to '1984' by George Orwell?",
-    "Top mystery novels of all time?",
-  ];
-
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<
     { id: string; slug: string; metaTitle: string }[]
@@ -61,8 +53,10 @@ export function Search() {
     }
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (
+    e?: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e?.preventDefault();
     if (query.trim()) {
       router.push(`/search?q=${query}`);
     }
@@ -70,21 +64,33 @@ export function Search() {
 
   return (
     <div className="relative w-full max-w-lg mx-auto" ref={searchRef}>
-      <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
+      <form onSubmit={onSubmit} className="flex items-center gap-1 w-32 group">
+        <input
+          type="text"
+          placeholder="SEARCH "
+          value={query}
+          onChange={handleChange}
+          className="w-full  border-none outline-0 focus:outline-0 rounded-lg focus:outline-none text-white"
+        />
+        <button
+          type="submit"
+          onClick={onSubmit}
+          className="  hover:bg-white rounded-lg hover:text-black transition"
+        >
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </form>
+      <span className="bg-white h-[0.1] w-full block group-hover:hidden transition-all duration-300"></span>
 
-      {loading && <p className="text-gray-500 mt-2">Searching...</p>}
+      {loading && <p className="text-black mt-2">Searching...</p>}
 
       {showResults && results.length > 0 && (
-        <ul className="absolute left-0 w-full mt-2 bg-white shadow-lg rounded-lg overflow-hidden z-50">
+        <ul className="absolute w-full md:-left-32  md:w-fit text-nowrap mt-2 bg-white shadow-lg rounded-lg overflow-hidden z-50 text-black">
           {results.map((post) => (
             <li key={post.id} className="border-b last:border-none">
               <a
                 href={`/${post.slug}`}
-                className="block px-4 py-2 text-highlight hover:underline underline-offset-4"
+                className="block px-4 py-2 hover:bg-gray-100 transition"
               >
                 {post.metaTitle}
               </a>

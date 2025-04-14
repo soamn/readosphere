@@ -16,10 +16,16 @@ import {
 interface ActionButtonsProps {
   postId: number;
   published: boolean;
+  isFeatured: boolean;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ postId, published }) => {
+const ActionButtons: React.FC<ActionButtonsProps> = ({
+  postId,
+  published,
+  isFeatured,
+}) => {
   const [isPublished, setIsPublished] = useState(published);
+  const [featured, setFeatured] = useState(isFeatured);
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -32,6 +38,23 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ postId, published }) => {
       });
       if (response.ok) {
         setIsPublished((prev) => !prev);
+        startTransition(() => {
+          router.refresh();
+        });
+      }
+    } catch (error) {
+      console.error("Error toggling publish status:", error);
+    }
+    setLoading(false);
+  };
+  const toggleFeatured = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/posts/${postId}/publish`, {
+        method: "PUT",
+      });
+      if (response.ok) {
+        setFeatured((prev) => !prev);
         startTransition(() => {
           router.refresh();
         });
@@ -82,6 +105,22 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ postId, published }) => {
           "Unpublish"
         ) : (
           "Publish"
+        )}
+      </Button>
+      <Button
+        onClick={toggleFeatured}
+        disabled={loading || isPending}
+        variant={isPublished ? "outline" : "default"}
+      >
+        {loading || isPending ? (
+          <>
+            <Loader2 className="animate-spin" />
+            {"Processing"}
+          </>
+        ) : isFeatured ? (
+          "Featured"
+        ) : (
+          "Unfeatured"
         )}
       </Button>
       <Dialog>

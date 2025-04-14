@@ -25,6 +25,7 @@ model Post {
   metaTags        String    @db.VarChar(191)
   content         String    @db.LongText
   userId          Int
+  isFeatured      Boolean   @default(false)
   categoryId      Int?
   thumbnail       String?
   published       Boolean   @default(true)

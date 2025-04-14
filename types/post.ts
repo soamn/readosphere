@@ -17,6 +17,7 @@ const PostSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   published: z.boolean(),
+  isFeatured: z.boolean(),
 });
 
 export type Post = z.infer<typeof PostSchema>;

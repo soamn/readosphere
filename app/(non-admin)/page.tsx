@@ -1,15 +1,17 @@
 import React from "react";
-import CategoryMap from "./accordian";
 import Hero from "./hero";
 import RecommendationList from "./recommendations";
-import BookOrbit from "./svg";
+import Featured from "./featured";
+import Catalogue from "./catalogue";
 
 const page = () => {
   return (
     <>
-      <BookOrbit />
       <Hero />
-      <CategoryMap />
+      <div className="h-full w-full overflow-clip">
+        <Featured />
+      </div>
+      <Catalogue />
       <RecommendationList />
     </>
   );
