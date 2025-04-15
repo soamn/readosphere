@@ -36,19 +36,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <h1 className="text-secondary text-3xl font-extrabold">
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 bg-background text-foreground">
+      <h1 className="text-primary text-3xl font-extrabold mb-6">
         Readosphere.com
       </h1>
-      <Card className="w-96 shadow-lg p-6">
+
+      <Card className="w-full max-w-sm shadow-lg  dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 p-5">
         <CardHeader>
-          <CardTitle className="text-center">Login</CardTitle>
+          <CardTitle className="text-center text-xl text-black dark:text-white">
+            Login
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               type="email"
               placeholder="Email"
+              className=" dark:bg-zinc-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -56,6 +60,7 @@ export default function LoginPage() {
             <Input
               type="password"
               placeholder="Password"
+              className="bg-white dark:bg-zinc-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
