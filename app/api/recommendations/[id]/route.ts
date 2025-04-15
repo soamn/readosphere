@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyAuthToken } from "@/utils/auth";
+import { revalidatePath } from "next/cache";
 
 function getTokenFromRequest(req: Request) {
   const cookieHeader = req.headers.get("cookie");
@@ -24,6 +25,7 @@ export async function PUT(req: Request, context: { params: { id: string } }) {
       where: { id: Number(id) },
       data: { name, description, imageUrl, isActive, link },
     });
+    revalidatePath("/");
 
     return NextResponse.json(updated);
   } catch {
@@ -46,6 +48,7 @@ export async function DELETE(
     await prisma.recommendation.delete({
       where: { id: Number(id) },
     });
+    revalidatePath("/");
 
     return NextResponse.json({ message: "Deleted successfully" });
   } catch {

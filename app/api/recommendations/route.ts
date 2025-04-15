@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
-
-
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: NextRequest) {
   const token = getTokenFromRequest(req);
@@ -37,6 +36,7 @@ export async function POST(req: Request) {
     const recommendation = await prisma.recommendation.create({
       data: { name, description, imageUrl, isActive, link },
     });
+    revalidatePath("/");
 
     return NextResponse.json(recommendation);
   } catch {

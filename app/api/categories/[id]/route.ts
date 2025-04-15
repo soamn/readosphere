@@ -37,14 +37,15 @@ export async function PUT(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: number }> }
 ) {
   try {
     const token = getTokenFromRequest(req);
     if (!token || !verifyAuthToken(token)) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    await prisma.category.delete({ where: { id: Number(params.id) } });
+    const id = (await context.params).id;
+    await prisma.category.delete({ where: { id: Number(id) } });
     return NextResponse.json({ message: "Category deleted" });
   } catch (error) {
     return NextResponse.json(
