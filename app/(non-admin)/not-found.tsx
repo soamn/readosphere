@@ -12,7 +12,7 @@ export function generateMetadata(): Metadata {
 
 const NotFound = () => {
   return (
-    <div className=" flex flex-col items-center  0 px-4">
+    <div className=" flex flex-col items-center  0 px-4 mt-50">
       <div className="text-center">
         <Frown className="w-16 h-16 text-gray-500 mx-auto mb-4" />
         <h1 className="text-4xl font-bold mb-2">404 - Page Not Found</h1>

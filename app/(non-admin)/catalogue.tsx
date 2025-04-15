@@ -1,20 +1,25 @@
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 
 const Catalogue = () => {
   return (
     <section className="w-full relative flex flex-col-reverse lg:flex-row  mt-20 px-4 md:px-10 lg:px-40 gap-8 overflow-x-clip">
       {/* Decorative Bird Image (Hidden on small screens) */}
-      <img
+      <Image
+        width={1920}
+        height={1080}
         src="/bird2.png"
         alt="Bird"
         className="w-[40rem]  absolute z-50 right-20 top-10 hidden lg:block  "
       />
 
       {/* Background Image */}
-      <img
-        src="/img989.jpg"
-        alt=""
+      <Image
+        width={1920}
+        height={1080}
+        src="/catalogue.jpg"
+        alt="catalogue_background"
         className="w-full h-[300px] md:h-[400px lg:h-[500px] object-cover  rounded-xl "
       />
 

@@ -1,5 +1,6 @@
 import { Timeline } from "@/components/ui/timeline";
 import { prisma } from "@/lib/prisma";
+import Image from "next/image";
 import React from "react";
 
 const Featured = async () => {
@@ -16,21 +17,33 @@ const Featured = async () => {
       },
     },
   });
-  const data = posts.map((post) => ({
-    title: post.title,
-    link: post.slug,
-    img: post.thumbnail || "/bg-readospherecom.jpg",
-    category: post.category?.name || "Uncategorized",
-  }));
+
+  const data = posts.map((post) => {
+    const dateObj = new Date(post.updatedAt);
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    const year = dateObj.getFullYear();
+    const formattedDate = `${month}.${day}.${year}`;
+
+    return {
+      title: post.title,
+      link: post.slug,
+      img: post.thumbnail || "/bg-readospherecom.jpg",
+      date: formattedDate,
+    };
+  });
+
   return (
     <>
       <section className="w-full relative mb-20 hidden md:block">
         <div className="absolute w-160 h-[50%] bg-zinc-900 top-0">
           <div className=" absolute w-2 h-screen  bg-zinc-900 right-0"></div>
         </div>
-        <img
+        <Image
+          width={1920}
+          height={1080}
           src="/feature.jpg"
-          alt=""
+          alt="feature_image"
           className="w-full h-screen object-cover"
         />
         <div className="absolute w-160 h-[50%] bg-zinc-900 bottom-0 right-0">

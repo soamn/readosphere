@@ -1,13 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import Navigation from "./navigation";
+import { Github } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className=" group relative ">
+    <footer className=" group relative mt-20">
       <div className="h-[20rem] w-full overflow-hidden">
-        <img
+        <Image
           src="/footer.jpg"
+          width={1920}
+          height={1080}
           alt="Footer image"
           className="w-full h-full object-cover object-top select-none 
   [mask-image:linear-gradient(to_top,_white_20%,_transparent_100%)]"
@@ -29,7 +33,10 @@ export default function Footer() {
       </div>
 
       <p className="text-xs sm:text-sm text-gray-300 absolute bottom-0 text-center w-full p-2 ">
-        © {new Date().getFullYear()} Readosphere. All rights reserved.
+        © {new Date().getFullYear()} Readosphere. All rights reserved.{" "}
+        <a href="https://github.com/soamn" target="_blank">
+          <Github className="inline-block ml-1" size={14} />
+        </a>
       </p>
     </footer>
   );

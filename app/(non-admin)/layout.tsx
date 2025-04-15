@@ -9,7 +9,7 @@ export default async function HomeLayout({
   return (
     <>
       <Header />
-      <main className="min-h-screen flex flex-col ">{children}</main>
+      {children}
       <Footer />
     </>
   );

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: NextRequest) {
   const token = getTokenFromRequest(req);
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
     const category = await prisma.category.create({
       data: { name, description },
     });
+    revalidatePath(`/${category.id}`);
     return NextResponse.json(category);
   } catch (error) {
     return NextResponse.json(

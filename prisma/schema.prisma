@@ -4,13 +4,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
   id       Int     @id @default(autoincrement())
-  email    String  @unique @db.VarChar(191)
+  email    String  @unique
   name     String?
   password String
   posts    Post[]
@@ -18,12 +18,12 @@ model User {
 
 model Post {
   id              Int       @id @default(autoincrement())
-  slug            String    @unique @db.VarChar(191)
-  title           String    @db.VarChar(191)
-  metaTitle       String    @db.VarChar(191)
+  slug            String    @unique
+  title           String
+  metaTitle       String
   metaDescription String
-  metaTags        String    @db.VarChar(191)
-  content         String    @db.LongText
+  metaTags        String
+  content         String
   userId          Int
   isFeatured      Boolean   @default(false)
   categoryId      Int?
@@ -39,7 +39,7 @@ model Post {
 
 model Category {
   id          Int     @id @default(autoincrement())
-  name        String  @unique @db.VarChar(191)
+  name        String  @unique
   description String?
   posts       Post[]
 }

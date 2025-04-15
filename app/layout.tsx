@@ -155,7 +155,7 @@ export default function Layout({
 }>) {
   return (
     <html lang="en">
-      <body className=" antialiase bg-offWhite ">{children}</body>
+      <body className=" antialiase  ">{children}</body>
     </html>
   );
 }

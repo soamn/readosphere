@@ -3,12 +3,6 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 import Link from "next/link";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 
 export const revalidate = 7200;
 export const dynamicParams = true;
@@ -83,30 +77,20 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto post space-y-6 mt-50 px-6 lg:px-10">
-      <Breadcrumb className="list-none flex flex-wrap items-center gap-2">
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink>{post.title}</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+    <div className="px-20">
+      <div className="w-full  mx-auto  post space-y-6 mt-40 px-70 lg:px-70 lg:py-20 bg-white  ">
+        <div
+          className="prose prose-sm sm:prose lg:prose-lg max-w-none"
+          dangerouslySetInnerHTML={{ __html: post?.content || "" }}
+        ></div>
 
-      <div
-        className="prose prose-sm sm:prose lg:prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: post?.content || "" }}
-      ></div>
-
-      <Script
-        type="application/ld+json"
-        suppressHydrationWarning
-        key="blog-jsonld"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+        <Script
+          type="application/ld+json"
+          suppressHydrationWarning
+          key="blog-jsonld"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </div>
     </div>
   );
 };

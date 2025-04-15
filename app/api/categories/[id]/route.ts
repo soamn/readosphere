@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(
   req: NextRequest,
@@ -24,7 +25,7 @@ export async function PUT(
       where: { id: categoryId },
       data: { name, description },
     });
-
+    revalidatePath(`/${category.id}`);
     return NextResponse.json(category);
   } catch (error) {
     return NextResponse.json(
@@ -52,4 +53,3 @@ export async function DELETE(
     );
   }
 }
-
