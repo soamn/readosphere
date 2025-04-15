@@ -77,10 +77,10 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   };
 
   return (
-    <div className="px-20">
-      <div className="w-full  mx-auto  post space-y-6 mt-40 px-70 lg:px-70 lg:py-20 bg-white  ">
+    <div className="px-4 sm:px-6 md:px-10 lg:px-20 ">
+      <div className="w-full mx-auto post space-y-6 mt-16 sm:mt-24 md:mt-32 lg:mt-40 px-4 sm:px-6 md:px-10 lg:px-28 lg:py-20 bg-white">
         <div
-          className="prose prose-sm sm:prose lg:prose-lg max-w-none"
+          className="prose prose-sm sm:prose md:prose-base lg:prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: post?.content || "" }}
         ></div>
 

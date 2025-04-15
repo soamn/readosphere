@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://readosphere.com"),
+  applicationName: "Readosphere",
   title: {
     default: "Readosphere",
     template: "%s | Readosphere",

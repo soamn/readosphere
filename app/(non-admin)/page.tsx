@@ -9,7 +9,6 @@ const page = () => {
   return (
     <>
       {" "}
-      <Header />
       <main className="min-h-screen flex flex-col ">
         <Hero />
         <div className="h-full w-full overflow-clip">

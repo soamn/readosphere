@@ -11,7 +11,7 @@ interface TimelineEntry {
   date: string;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -33,7 +33,7 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   return (
     <div className="w-full font-sans " ref={containerRef}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-lg md:text-8xl text-center font-extralight tracking-widest  relative top-35 left-52">
+        <h2 className="text-6xl lg:text-8xl  font-extralight tracking-widest  relative lg:top-35 lg:left-52  text-center">
           Featured
         </h2>
       </div>
@@ -44,10 +44,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           return (
             <div
               key={index}
-              className="flex flex-col lg:flex-row py-12 relative"
+              className=" flex-col hidden lg:flex lg:flex-row py-12 relative"
             >
               {isLeft && (
-                <div className="w-full flex flex-col lg:flex-row justify-between lg:space-x-40">
+                <div className="w-full flex  justify-between space-x-40">
                   <div className="w-full h-[50rem] overflow-clip ">
                     <Image
                       src={item.img}
@@ -57,17 +57,17 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-full flex flex-col items-start self-end px-4 lg:px-0  ]">
-                    <h3 className="text-2xl lg:text-4xl tracking-widest font-extralight uppercase text-red-600">
+                  <div className="w-full flex flex-col items-start self-end  ]">
+                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
                       {item.title}
                     </h3>
-                    <span className="text-lg lg:text-2xl text-[#656565]   uppercase mt-4 text-[#656565">
+                    <span className="text-2xl text-[#656565]   uppercase mt-4 text-[#656565">
                       {item.date}
                     </span>
-                    <div className="relative group w-full lg:w-1/2">
+                    <div className="relative group w-1/2">
                       <a
                         href={`/${item.link}`}
-                        className="tracking-widest w-full flex justify-between items-center mt-10 lg:mt-20 text-[#656565] "
+                        className="tracking-widest w-full flex justify-between items-center mt-20 text-[#656565] "
                       >
                         View post
                         <ArrowRight />
@@ -79,19 +79,19 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               )}
 
               {!isLeft && (
-                <div className="w-full flex flex-col lg:flex-row justify-between lg:space-x-40">
+                <div className="w-full flex  justify-between space-x-40">
                   {/* Text section on the left */}
-                  <div className="w-full flex flex-col items-end self-end px-4 lg:px-0">
-                    <h3 className="text-2xl lg:text-4xl tracking-widest font-extralight uppercase text-red-600">
+                  <div className="w-full flex flex-col items-end self-end ">
+                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
                       {item.title}
                     </h3>
                     <span className="text-lg lg:text-2xl text-[#656565]  uppercase mt-4">
                       {item.date}
                     </span>
-                    <div className="relative group w-full lg:w-1/2">
+                    <div className="relative group w-1/2">
                       <a
                         href={`/${item.link}`}
-                        className="tracking-widest w-full flex justify-between items-center mt-10 lg:mt-20 text-[#656565] "
+                        className="tracking-widest w-full flex justify-between items-center mt-20 text-[#656565] "
                       >
                         View post
                         <ArrowRight />
@@ -115,6 +115,42 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             </div>
           );
         })}
+        <div className=" flex-col  lg:hidden  py-12 relative">
+          {data.map((item, key) => (
+            <div
+              key={key}
+              className="w-full flex flex-col items-start self-end px-4 mb-10 "
+            >
+              <div className="w-full h-[20rem] overflow-clip ">
+                <Image
+                  src={item.img}
+                  alt={item.title}
+                  width={1920}
+                  height={1080}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start self-end px-4 mt-2">
+                <h3 className="text-2xl lg:text-4xl tracking-widest font-extralight uppercase text-red-600">
+                  {item.title}
+                </h3>
+                <span className="text-lg  text-[#656565]   uppercase mt-4 text-[#656565">
+                  {item.date}
+                </span>
+                <div className="relative group w-full ">
+                  <a
+                    href={`/${item.link}`}
+                    className="tracking-widest w-full flex justify-between items-center mt-10  text-[#656565] "
+                  >
+                    View post
+                    <ArrowRight />
+                  </a>
+                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#656565] transition-opacity duration-300 group-hover:opacity-0"></span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Vertical timeline */}
         <div
@@ -140,3 +176,5 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     </div>
   );
 };
+
+export default Timeline;

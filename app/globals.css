@@ -126,12 +126,13 @@
     font-family: "Nanum Myeongjo";
   }
 }
+.navigation {
+  @apply hover:underline hover:cursor-pointer underline-offset-8 tracking-widest transition-all duration-300 md:text-xs lg:text-lg text-nowrap;
+}
 .font-rakkas {
   font-family: "Rakkas", cursive;
 }
-.font-special-gothic {
-  font-family: "Special Gothic", cursive;
-}
+
 .font-nanum-myeongjo {
   font-family: "Nanum Myeongjo", cursive;
 }

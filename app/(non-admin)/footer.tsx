@@ -35,7 +35,7 @@ export default function Footer() {
       <p className="text-xs sm:text-sm text-gray-300 absolute bottom-0 text-center w-full p-2 ">
         © {new Date().getFullYear()} Readosphere. All rights reserved.{" "}
         <a href="https://github.com/soamn" target="_blank">
-          <Github className="inline-block ml-1" size={14} />
+          <Github className="inline-block ml-1 text-black" size={15} />
         </a>
       </p>
     </footer>

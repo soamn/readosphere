@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react"; // if you're using lucide-react
+import { MoveRight } from "lucide-react";
 
 export function Search() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<
     { id: string; slug: string; metaTitle: string }[]
   >([]);
-  const [loading, setLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -40,7 +39,6 @@ export function Search() {
       return;
     }
 
-    setLoading(true);
     setShowResults(true);
     try {
       const response = await fetch(`/api/posts/search?s=${searchQuery}`);
@@ -48,8 +46,6 @@ export function Search() {
       setResults(data);
     } catch (error) {
       console.error("Search error:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,29 +59,25 @@ export function Search() {
   };
 
   return (
-    <div className="relative w-full max-w-lg mx-auto" ref={searchRef}>
-      <form onSubmit={onSubmit} className="flex items-center gap-1 w-32 group">
+    <div ref={searchRef} className="relative w-fit">
+      <form
+        onSubmit={onSubmit}
+        className="flex items-center border-b border-white  transition duration-300 hover:border-0 focus-within:border-0 "
+      >
         <input
           type="text"
-          placeholder="SEARCH "
+          placeholder="SEARCH"
           value={query}
           onChange={handleChange}
-          className="w-full  border-none outline-0 focus:outline-0 rounded-lg focus:outline-none text-white"
+          className="bg-transparent text-white placeholder:text-white focus:outline-none w-24 lg:w-30 md:w-20  "
         />
-        <button
-          type="submit"
-          onClick={onSubmit}
-          className="  hover:bg-white rounded-lg hover:text-black transition"
-        >
-          <ArrowRight className="w-5 h-5" />
+        <button type="submit" onClick={onSubmit} className="cursor-pointer">
+          <MoveRight className="w-4 h-4" />
         </button>
       </form>
-      <span className="bg-white h-[0.1] w-full block group-hover:hidden transition-all duration-300"></span>
-
-      {loading && <p className="text-black mt-2">Searching...</p>}
 
       {showResults && results.length > 0 && (
-        <ul className="absolute w-full md:-left-32  md:w-fit text-nowrap mt-2 bg-white shadow-lg rounded-lg overflow-hidden z-50 text-black">
+        <ul className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg z-50 text-black">
           {results.map((post) => (
             <li key={post.id} className="border-b last:border-none">
               <a
