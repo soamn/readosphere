@@ -1,15 +1,23 @@
 import path from "path";
 import { prisma } from "@/lib/prisma";
-import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
+import { verifyAuthToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
+const isBrowserRequest = (req: NextRequest): boolean => {
+  const userAgent = req.headers.get("user-agent") || "";
+  const referer = req.headers.get("referer") || "";
+  return (
+    !req.headers.get("Authorization") &&
+    (!referer || userAgent.includes("Mozilla"))
+  );
+};
 
 export async function GET(req: NextRequest) {
-  const token = getTokenFromRequest(req);
-  if (!token || !verifyAuthToken(token)) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (isBrowserRequest(req)) {
+    return NextResponse.redirect(new URL("/not-found", req.url));
   }
+
   try {
     const posts = await prisma.post.findMany({
       orderBy: { createdAt: "desc" },
