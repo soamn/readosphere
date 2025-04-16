@@ -28,7 +28,7 @@ const Featured = async () => {
     return {
       title: post.title,
       link: post.slug,
-      img: post.thumbnail || "/bg-readospherecom.jpg",
+      img: post.thumbnail || "/feature.jpg",
       date: formattedDate,
     };
   });
