@@ -4,10 +4,7 @@ import { getTokenFromRequest, verifyAuthToken } from "@/utils/auth";
 import { revalidatePath } from "next/cache";
 
 export async function GET(req: NextRequest) {
-  const token = getTokenFromRequest(req);
-  if (!token || !verifyAuthToken(token)) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
+
 
   try {
     const recommendations = await prisma.recommendation.findMany({
