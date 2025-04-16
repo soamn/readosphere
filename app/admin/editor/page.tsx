@@ -139,7 +139,7 @@ const page = () => {
       toast("Error creating post");
     }
   };
-  if (categories === null) {
+  if (categories.length === 0) {
     return <div className="text-center">Loading...</div>;
   }
 

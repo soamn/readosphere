@@ -243,7 +243,7 @@ export default function Studio({
                   <SelectTrigger className="w-full mt-2">
                     <SelectValue>
                       {category
-                        ? categories.find((cat) => String(cat.id) === category)
+                        ? categories.find((cat) => cat.id === Number(category))
                             ?.name
                         : "Select a category"}
                     </SelectValue>
