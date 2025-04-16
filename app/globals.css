@@ -150,7 +150,6 @@
 .post h1 {
   @apply text-4xl lg:text-5xl;
 }
-/* 
 .post h2 {
   @apply text-4xl;
 }
@@ -169,20 +168,15 @@
 .post ol {
   list-style-type: decimal;
   margin-left: 1rem;
-  }
-  
-  .post ul {
-    list-style-type: disc;
-    margin-left: 1rem;
-    } */
-
-.post img {
-  /* @apply w-full h-auto  object-cover; */
-  width: 100%;
-  height: auto;
 }
 
-.post p {
-  @apply text-[#2E2E2E] text-xl;
-  font-family: "PT Serif";
+.post ul {
+  list-style-type: disc;
+  margin-left: 1rem;
+}
+
+.post img {
+  @apply w-full h-auto  object-cover;
+  width: 100%;
+  height: auto;
 }
