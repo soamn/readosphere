@@ -19,18 +19,35 @@ const PostSchema = z.object({
 
 type PostData = z.infer<typeof PostSchema>;
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
+  const [html, setHTML] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [metaTitle, setMetaTitle] = useState<string>("");
+  const [metaDescription, setMetaDescription] = useState<string>("");
+  const [tags, setTags] = useState<string>("");
+  const [slug, setSlug] = useState<string>("");
+  const [categories, setCategories] = useState<Array<Category>>([]);
+  const [category, setCategory] = useState<string>("");
+  const [thumbnail, setThumbnail] = useState<string>("");
+  const [saving, setSaving] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true); // new loading state
+  const [errors, setErrors] = useState<{
+    title?: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    tags?: string;
+    content?: string;
+    slug?: string;
+    category?: string;
+  }>({});
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
-          {
-            cache: "no-store",
-          }
-        );
+        const res = await fetch(`/api/categories`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
           throw new Error("Failed to fetch categories");
@@ -44,31 +61,14 @@ const page = () => {
         setCategories(filteredCategories);
       } catch (error) {
         console.error("Error fetching categories:", error);
+        toast("Error fetching categories");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCategories();
   }, []);
-
-  const [html, setHTML] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
-  const [slug, setSlug] = useState<string>("");
-  const [categories, setCategories] = useState<Array<Category>>([]);
-  const [category, setCategory] = useState<string>("");
-  const [thumbnail, setThumbnail] = useState<string>("");
-  const [saving, setSaving] = useState<boolean>(false);
-  const [errors, setErrors] = useState<{
-    title?: string;
-    metaTitle?: string;
-    metaDescription?: string;
-    tags?: string;
-    content?: string;
-    slug?: string;
-    category?: string;
-  }>({});
 
   const data = {
     title,
@@ -107,8 +107,7 @@ const page = () => {
 
     if (!validation.success) {
       const formattedErrors = validation.error.format();
-      setErrors((prev) => ({
-        ...prev,
+      setErrors({
         title: formattedErrors.title?._errors?.[0],
         metaTitle: formattedErrors.metaTitle?._errors?.[0],
         metaDescription: formattedErrors.metaDescription?._errors?.[0],
@@ -116,7 +115,7 @@ const page = () => {
         content: formattedErrors.content?._errors?.[0],
         slug: formattedErrors.slug?._errors?.[0],
         category: formattedErrors.category?._errors?.[0],
-      }));
+      });
       return;
     }
 
@@ -137,17 +136,17 @@ const page = () => {
       router.push("/admin/dashboard");
     } catch (error) {
       toast("Error creating post");
+      setSaving(false);
     }
   };
-  if (categories.length === 0) {
-    return <div className="text-center">Loading...</div>;
-  }
+
+  if (loading) return <div className="text-center">Loading...</div>;
 
   return saving ? (
-    <div className="text-center">Saving</div>
+    <div className="text-center">Saving...</div>
   ) : (
     <Studio data={data} handleSave={handleSave} />
   );
 };
 
-export default page;
+export default Page;
