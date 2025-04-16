@@ -14,20 +14,20 @@ export default async function RecommendationPage() {
         Categories
       </h2>
 
-      <div className="grid gap-y-10 gap-x-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-4 sm:px-10 md:px-2 mt-20 ">
+      <div className="grid gap-y-10 gap-x-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 px-10 md:px-20 mt-20 ">
         {recommendations.map((rec) => (
           <Link href={rec.link || "#"} key={rec.id} target="_blank">
             <h2 className="font-semibold text-2xl  tracking-widest">
               {rec.name}
             </h2>
-            <Card className="relative overflow-hidden shadow-none border-0 group w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] ">
+            <Card className="relative overflow-hidden shadow-none border-0 group w-full h-[400px] md:h-[600px] mt-5">
               {/* Image */}
               <img
                 src={rec.imageUrl || ""}
                 alt={rec.name}
                 width={600}
                 height={600}
-                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-0  group-hover:w-20 group-hover:h-20 group-hover:top-1/2 group-hover:left-1/2 group-hover:translate-x-[-50%] group-hover:translate-y-[-50%]"
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out lg:group-hover:rounded-full group-hover:scale-0  group-hover:w-20 group-hover:h-20 group-hover:top-1/2 group-hover:left-1/2 group-hover:translate-x-[-50%] group-hover:translate-y-[-50%]"
               />
 
               {/* Description text (initially hidden) */}

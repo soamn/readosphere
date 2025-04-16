@@ -33,7 +33,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   return (
     <div className="w-full font-sans " ref={containerRef}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-6xl lg:text-8xl  font-extralight tracking-widest  relative lg:top-35 lg:left-52  text-center">
+        <h2 className="text-6xl lg:text-7xl  font-extralight tracking-widest  relative lg:top-35 lg:left-38  text-center">
           Featured
         </h2>
       </div>
@@ -47,8 +47,8 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               className=" flex-col hidden lg:flex lg:flex-row py-12 relative"
             >
               {isLeft && (
-                <div className="w-full flex  justify-between space-x-40">
-                  <div className="w-full h-[50rem] overflow-clip ">
+                <div className="w-full flex  justify-between space-x-50">
+                  <div className="w-full h-[48rem] overflow-clip ">
                     <Image
                       src={item.img}
                       alt={item.title}
@@ -57,7 +57,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="w-full flex flex-col items-start self-end  ]">
+                  <div className="w-full flex flex-col items-start self-end  ">
                     <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
                       {item.title}
                     </h3>
@@ -79,8 +79,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               )}
 
               {!isLeft && (
-                <div className="w-full flex  justify-between space-x-40">
-                  {/* Text section on the left */}
+                <div className="w-full flex  justify-between space-x-50">
                   <div className="w-full flex flex-col items-end self-end ">
                     <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
                       {item.title}
@@ -100,8 +99,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                     </div>
                   </div>
 
-                  {/* Image section on the right */}
-                  <div className="w-full h-[50rem] overflow-clip">
+                  <div className="w-full h-[48rem] overflow-clip">
                     <Image
                       width={1920}
                       height={1080}
@@ -152,12 +150,11 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
           ))}
         </div>
 
-        {/* Vertical timeline */}
         <div
           style={{ height: `${height}px` }}
           className="absolute left-1/2 -translate-x-1/2 top-38 w-[2px] hidden lg:block"
         >
-          <div className="absolute inset-0 w-[2px] bg-neutral-400 dark:bg-neutral-700" />
+          <div className="absolute inset-0 w-[0.1px] bg-neutral-400 dark:bg-neutral-700" />
           {Array.from({ length: Math.floor(height / 120) }).map((_, i) => (
             <div
               key={i}
@@ -169,7 +166,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             style={{
               height: heightTransform,
             }}
-            className="absolute inset-x-0 top-0 w-[2px] bg-white dark:bg-white"
+            className="absolute inset-x-0 top-0 w-[0.08px] bg-white dark:bg-white"
           />
         </div>
       </div>

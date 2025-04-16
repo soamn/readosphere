@@ -1,4 +1,4 @@
-import  Timeline  from "@/components/ui/timeline";
+import Timeline from "@/components/ui/timeline";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import React from "react";
@@ -35,7 +35,7 @@ const Featured = async () => {
 
   return (
     <>
-      <section className="w-full h-screen relative mb-20 hidden md:block bg-red-500">
+      <section className="w-full lg:h-screen relative mb-20  bg-zinc-900">
         <div className="absolute w-1/3 h-[50%] bg-zinc-900 top-0">
           <div className=" absolute w-2 h-screen  bg-zinc-900 right-0"></div>
         </div>
@@ -46,8 +46,8 @@ const Featured = async () => {
           alt="feature_image"
           className="w-full h-full object-cover"
         />
-        <div className="absolute w-1/3 h-[50%] bg-zinc-900 -bottom-0 right-0">
-          <div className=" absolute w-2 h-screen  bg-zinc-900 left-0 -top-full"></div>
+        <div className="absolute w-1/3 h-[50%] bg-zinc-900 -bottom-2 right-0">
+          <div className=" absolute w-2 h-screen  bg-zinc-900 left-0 bottom-2"></div>
         </div>
       </section>
       <div className="w-full">
