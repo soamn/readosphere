@@ -27,7 +27,7 @@ export async function PATCH(
       data: { published: !existingPost.published },
     });
     revalidatePath(`/${updatedPost.slug}`);
-
+    revalidatePath("/");
     return NextResponse.json({
       message: `Post ${updatedPost.published ? "published" : "unpublished"}`,
       post: updatedPost,
@@ -62,6 +62,7 @@ export async function PUT(
       data: { isFeatured: !existingPost.isFeatured },
     });
     revalidatePath(`/${updatedPost.slug}`);
+    revalidatePath("/");
 
     return NextResponse.json({
       message: `Post ${updatedPost.isFeatured ? "Featured" : "Unfeatured"}`,

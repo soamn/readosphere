@@ -96,6 +96,7 @@ export async function POST(
       },
     });
     revalidatePath(`/${updatedPost.slug}`);
+    revalidatePath("/");
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {
     console.error("Error updating post:", error);

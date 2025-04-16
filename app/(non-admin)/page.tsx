@@ -3,7 +3,6 @@ import Hero from "./hero";
 import RecommendationList from "./recommendations";
 import Featured from "./featured";
 import Catalogue from "./catalogue";
-import Header from "./header";
 
 const page = () => {
   return (

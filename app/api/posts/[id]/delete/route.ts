@@ -26,6 +26,7 @@ export async function DELETE(
       where: { id },
     });
     revalidatePath(`/${deletedPost.slug}`);
+    revalidatePath("/");
     return NextResponse.json({
       message: `Post ${deletedPost.title} deleted successfully`,
     });

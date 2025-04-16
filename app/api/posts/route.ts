@@ -4,6 +4,7 @@ import { verifyAuthToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
+import { revalidatePath } from "next/cache";
 const isBrowserRequest = (req: NextRequest): boolean => {
   const userAgent = req.headers.get("user-agent") || "";
   const referer = req.headers.get("referer") || "";
@@ -126,7 +127,7 @@ export async function POST(req: NextRequest) {
         user: { connect: { id: adminUser.id } },
       },
     });
-
+    revalidatePath("/");
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
     console.error("Error creating post:", error);
