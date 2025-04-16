@@ -139,6 +139,9 @@ const page = () => {
       toast("Error creating post");
     }
   };
+  if (categories === null) {
+    return <div className="text-center">Loading...</div>;
+  }
 
   return saving ? (
     <div className="text-center">Saving</div>
