@@ -45,7 +45,7 @@ const Page = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`/api/categories`, {
+        const res = await fetch(`/api/categories/?ts=${Date.now()}`, {
           cache: "no-store",
         });
 

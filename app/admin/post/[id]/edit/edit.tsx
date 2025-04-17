@@ -46,10 +46,9 @@ const EditStudio = ({ initialData }: { initialData: any }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`/api/categories?ts=${Date.now()}`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) throw new Error("Failed to fetch categories");
 
