@@ -49,7 +49,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               {isLeft && (
                 <div className="w-full flex  justify-between space-x-50">
                   <div className="w-full h-[40rem] overflow-clip ">
-                    <img
+                    <Image
                       src={item.img}
                       alt={item.title}
                       width={1920}
@@ -58,7 +58,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                     />
                   </div>
                   <div className="w-full flex flex-col items-start self-end  ">
-                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
+                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-[#C6C8BA]">
                       {item.title}
                     </h3>
                     <span className="text-2xl text-[#656565]   uppercase mt-4 text-[#656565">
@@ -81,7 +81,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               {!isLeft && (
                 <div className="w-full flex  justify-between space-x-50">
                   <div className="w-full flex flex-col items-end self-end ">
-                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-red-600">
+                    <h3 className="text-4xl tracking-widest font-extralight uppercase text-[#C6C8BA]">
                       {item.title}
                     </h3>
                     <span className="text-lg lg:text-2xl text-[#656565]  uppercase mt-4">
@@ -100,7 +100,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                   </div>
 
                   <div className="w-full h-[40rem] overflow-clip">
-                    <img
+                    <Image
                       width={1920}
                       height={1080}
                       src={item.img}

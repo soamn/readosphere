@@ -41,6 +41,7 @@ const EditStudio = ({ initialData }: { initialData: any }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [saving, setSaving] = useState<boolean>(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState<boolean>(true); // new loading state
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -65,13 +66,13 @@ const EditStudio = ({ initialData }: { initialData: any }) => {
         const categoryExists = validCategories.some(
           (cat: Category) => cat.id === Number(initialData.categoryId)
         );
-
-        // If deleted, set fallback category (like first available one)
         if (!categoryExists && validCategories.length > 0) {
           setCategory(String(validCategories[0].id));
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -146,6 +147,7 @@ const EditStudio = ({ initialData }: { initialData: any }) => {
       toast("Error updating post");
     }
   };
+  if (loading) return <div className="text-center">Loading...</div>;
 
   return saving ? (
     <div className="text-center">Saving...</div>
