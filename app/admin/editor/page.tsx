@@ -58,12 +58,15 @@ const Page = () => {
           ({ id, name }: { id: number; name: string }) => ({ id, name })
         );
 
-        setCategories(filteredCategories);
+        if (filteredCategories.length > 0) {
+          setCategories(filteredCategories);
+          setLoading(false);
+        } else {
+          toast("No categories found");
+        }
       } catch (error) {
         console.error("Error fetching categories:", error);
         toast("Error fetching categories");
-      } finally {
-        setLoading(false);
       }
     };
 

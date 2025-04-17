@@ -55,24 +55,23 @@ const EditStudio = ({ initialData }: { initialData: any }) => {
 
         const data = await res.json();
         const validCategories = data.map(
-          ({ id, name }: { id: number; name: string }) => ({
-            id,
-            name,
-          })
+          ({ id, name }: { id: number; name: string }) => ({ id, name })
         );
 
-        setCategories(validCategories);
+        if (validCategories.length > 0) {
+          setCategories(validCategories);
+          setLoading(false);
 
-        const categoryExists = validCategories.some(
-          (cat: Category) => cat.id === Number(initialData.categoryId)
-        );
-        if (!categoryExists && validCategories.length > 0) {
-          setCategory(String(validCategories[0].id));
+          const categoryExists = validCategories.some(
+            (cat: Category) => cat.id === Number(initialData.categoryId)
+          );
+
+          if (!categoryExists) {
+            setCategory(String(validCategories[0].id));
+          }
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
