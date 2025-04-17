@@ -3,8 +3,7 @@ import React from "react";
 
 const Catalogue = () => {
   return (
-    <section className="w-full relative flex flex-col-reverse lg:flex-row  mt-20 px-4 md:px-10 lg:px-20 gap-8 overflow-x-clip mb-10">
-      {/* Decorative Bird Image (Hidden on small screens) */}
+    <section className="w-full relative flex flex-col-reverse lg:flex-row  mt-2 px-4 md:px-10 lg:px-20 gap-8 overflow-x-clip mb-20">
       <Image
         width={1920}
         height={1080}
@@ -13,7 +12,6 @@ const Catalogue = () => {
         className="lg:w-[35rem] top-10   absolute z-20 right-0  hidden lg:block "
       />
 
-      {/* Background Image */}
       <Image
         width={1920}
         height={1080}

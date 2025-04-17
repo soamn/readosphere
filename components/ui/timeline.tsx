@@ -33,7 +33,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
   return (
     <div className="w-full font-sans " ref={containerRef}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-6xl lg:text-7xl  font-extralight tracking-widest  relative lg:top-35 lg:left-38  text-center">
+        <h2 className="text-6xl lg:text-6xl  font-extralight tracking-widest  relative lg:top-35 lg:left-30  text-center">
           Featured
         </h2>
       </div>
@@ -48,8 +48,8 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
             >
               {isLeft && (
                 <div className="w-full flex  justify-between space-x-50">
-                  <div className="w-full h-[48rem] overflow-clip ">
-                    <Image
+                  <div className="w-full h-[40rem] overflow-clip ">
+                    <img
                       src={item.img}
                       alt={item.title}
                       width={1920}
@@ -99,8 +99,8 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                     </div>
                   </div>
 
-                  <div className="w-full h-[48rem] overflow-clip">
-                    <Image
+                  <div className="w-full h-[40rem] overflow-clip">
+                    <img
                       width={1920}
                       height={1080}
                       src={item.img}

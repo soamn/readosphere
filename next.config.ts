@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ["readosphere.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "readosphere.com",
+        pathname: "/uploads/**",
+      },
+    ],
+  },
   reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: true,

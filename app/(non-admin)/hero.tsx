@@ -5,16 +5,16 @@ import React from "react";
 const Hero = () => {
   return (
     <>
-      <section className="w-full h-[43rem] relative overflow-hidden group">
+      <section className="w-full h-[43rem] relative overflow-hidden ">
         <Image
-          src="/hero1.jpg"
+          src="/hero4.jpg"
           alt="hero image"
           width={1920}
           height={1080}
-          className="w-full h-[43rem] object-cover select-none group-hover:blur-[4px] transition-all duration-300 [mask-image:linear-gradient(to_bottom,_white,_transparent)]"
+          className="w-full h-[43rem] object-cover select-none  transition-all duration-300 [mask-image:linear-gradient(to_bottom,_white,_transparent)]"
         />
         <div className="absolute w-full top-[40%] text-center cursor-pointer px-4">
-          <h1 className="flex flex-col text-5xl md:text-6xl lg:text-8xl group-hover:text-white transition-all duration-300">
+          <h1 className="flex flex-col text-5xl md:text-6xl lg:text-[4.6rem]  ">
             <span className="font-extralight selection:bg-black/30 tracking-widest">
               Rediscover the
             </span>
@@ -27,17 +27,17 @@ const Hero = () => {
 
       <section className="flex flex-col mb-20 md:px-20  text-[#FEFEFE] gap-y-7 lg:gap-0">
         {/* Heading: "Each word holds" */}
-        <h2 className="text-4xl md:6xl  lg:text-8xl  tracking-widest whitespace-nowrap  text-center   lg:text-left">
+        <h2 className="text-4xl md:6xl  lg:text-[4.6rem]  tracking-widest whitespace-nowrap  text-center   lg:text-left">
           Each word holds
         </h2>
 
         {/* Subtexts & CTA */}
         <div className="flex justify-center   w-full ">
           <div className="flex flex-col items-center md:items-start w-fit lg:ml-90">
-            <p className="text-base md:text-md   text-center ">
+            <p className="text-base md:text-xl   text-center tracking-wider">
               Inviting you to immerse yourself
             </p>
-            <p className="text-base md:text-md text-center md:text-left">
+            <p className="text-base md:text-xl text-center md:text-left tracking-wider">
               in the rich tapestry of the words...
             </p>
 
@@ -58,7 +58,7 @@ const Hero = () => {
 
         {/* Heading: "a story" */}
         <div className="flex justify-center lg:justify-end  ">
-          <h2 className="text-5xl md:text-6xl  lg:text-8xl  tracking-widest whitespace-nowrap text-center ">
+          <h2 className="text-5xl md:text-6xl  lg:text-[4.6rem]  tracking-widest whitespace-nowrap text-center lg:relative -top-12">
             a story
           </h2>
         </div>
