@@ -48,7 +48,11 @@ export default function Editor({
       /<img([^>]*?)src="(.*?)"([^>]*?)>/g,
       (_match, p1, src, p2) => {
         const altTitle = getImageNameFromURL(src);
-        return `<img${p1}src="${src}" alt="${altTitle}" title="${altTitle}"${p2} width="auto" height="auto" classname="">`;
+        return `
+      <div style="text-align: center;">
+        <img${p1} src="${src}" alt="${altTitle}" title="${altTitle}"${p2} 
+        style="width: 600px; height: auto; display: block; margin: 1rem auto;" />
+      </div>`;
       }
     );
 

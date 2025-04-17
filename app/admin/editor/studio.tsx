@@ -68,6 +68,7 @@ export default function Studio({
     categories,
     errors,
     category,
+    thumbnail,
     setHTML,
     setTitle,
     setMetaTitle,
@@ -90,6 +91,11 @@ export default function Studio({
       setShowMetaSection(true);
     }
   }, [errors]);
+  useEffect(() => {
+    if (thumbnail && !thumbnailPreview) {
+      setThumbnailPreview(thumbnail);
+    }
+  }, [thumbnail, thumbnailPreview]);
 
   const toggleEditorFullscreen = () => {
     setIsEditorFullscreen((prev) => {
@@ -108,7 +114,7 @@ export default function Studio({
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-    const maxSizeInMB = 2;
+    const maxSizeInMB = 5;
     const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
 
     if (file) {

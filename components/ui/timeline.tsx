@@ -1,7 +1,6 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 import { useScroll, useTransform, motion } from "motion/react";
-import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 interface TimelineEntry {
@@ -49,7 +48,8 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               {isLeft && (
                 <div className="w-full flex  justify-between space-x-50">
                   <div className="w-full h-[40rem] overflow-clip ">
-                    <Image
+                    <img
+                      loading="lazy"
                       src={item.img}
                       alt={item.title}
                       width={1920}
@@ -100,7 +100,8 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
                   </div>
 
                   <div className="w-full h-[40rem] overflow-clip">
-                    <Image
+                    <img
+                      loading="lazy"
                       width={1920}
                       height={1080}
                       src={item.img}
@@ -120,7 +121,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
               className="w-full flex flex-col items-start self-end px-4 mb-10 "
             >
               <div className="w-full h-[20rem] overflow-clip ">
-                <Image
+                <img
                   src={item.img}
                   alt={item.title}
                   width={1920}

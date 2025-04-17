@@ -176,7 +176,5 @@
 }
 
 .post img {
-  @apply w-full h-auto  object-cover;
-  width: 100%;
-  height: auto;
+  @apply w-full h-auto object-cover  mx-auto my-4 rounded-xl;
 }
