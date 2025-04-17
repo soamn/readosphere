@@ -1,6 +1,5 @@
 import path from "path";
 import { prisma } from "@/lib/prisma";
-import { verifyAuthToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
@@ -27,7 +26,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(posts, { status: 200 });
   } catch (error) {
-    console.error("Error fetching posts:", error);
     return NextResponse.json(
       { error: "Error fetching posts" },
       { status: 500 }
@@ -58,7 +56,7 @@ export async function POST(req: NextRequest) {
       !category
     ) {
       return NextResponse.json(
-        { error: "All fields  are required" },
+        { error: "All fields are required" },
         { status: 400 }
       );
     }
@@ -87,12 +85,7 @@ export async function POST(req: NextRequest) {
       const folderName = `${now.getFullYear()}-${String(
         now.getMonth() + 1
       ).padStart(2, "0")}`;
-      const uploadDir = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        folderName
-      );
+      const uploadDir = path.join(process.cwd(), "uploads", folderName); // not public
       await mkdir(uploadDir, { recursive: true });
 
       const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
@@ -100,7 +93,9 @@ export async function POST(req: NextRequest) {
       const filePath = path.join(uploadDir, fileName);
 
       await writeFile(filePath, resizedBuffer);
-      savedThumbnailPath = `/uploads/${folderName}/${fileName}`;
+
+      // Save the path for the API route
+      savedThumbnailPath = `/api/uploads/${folderName}/${fileName}`;
     }
 
     const adminUser = await prisma.user.findFirst({
@@ -127,10 +122,10 @@ export async function POST(req: NextRequest) {
         user: { connect: { id: adminUser.id } },
       },
     });
+
     revalidatePath("/");
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
-    console.error("Error creating post:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

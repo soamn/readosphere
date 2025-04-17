@@ -8,16 +8,16 @@ export async function DELETE(
   req: Request,
   props: { params: Promise<{ id: string }> }
 ) {
-  const params = await props.params;
-  try {
-    const id = parseInt(params.id, 10);
+  const { id } = await props.params;
 
-    if (isNaN(id)) {
+  try {
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) {
       return NextResponse.json({ error: "Invalid post ID" }, { status: 400 });
     }
 
     const existingPost = await prisma.post.findUnique({
-      where: { id },
+      where: { id: numericId },
     });
 
     if (!existingPost) {
@@ -25,18 +25,15 @@ export async function DELETE(
     }
 
     const deletedPost = await prisma.post.delete({
-      where: { id },
+      where: { id: numericId },
     });
 
     if (deletedPost.thumbnail) {
-      const filePath = path.join(
-        process.cwd(),
-        "public",
-        deletedPost.thumbnail
-      );
+      const thumbnailRelativePath = deletedPost.thumbnail.replace(/^\/api/, "");
+      const filePath = path.join(process.cwd(), thumbnailRelativePath);
 
       if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath); // Delete the file
+        fs.unlinkSync(filePath);
       }
     }
 
@@ -44,10 +41,9 @@ export async function DELETE(
     revalidatePath("/");
 
     return NextResponse.json({
-      message: `Post ${deletedPost.title} deleted successfully`,
+      message: `Post "${deletedPost.title}" deleted successfully.`,
     });
   } catch (error) {
-    console.error("Error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

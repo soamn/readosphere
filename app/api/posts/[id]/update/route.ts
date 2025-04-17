@@ -66,12 +66,7 @@ export async function POST(
       const folderName = `${now.getFullYear()}-${String(
         now.getMonth() + 1
       ).padStart(2, "0")}`;
-      const uploadDir = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        folderName
-      );
+      const uploadDir = path.join(process.cwd(), "uploads", folderName);
       await mkdir(uploadDir, { recursive: true });
 
       const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
@@ -79,7 +74,9 @@ export async function POST(
       const filePath = path.join(uploadDir, fileName);
 
       await writeFile(filePath, resizedBuffer);
-      savedThumbnailPath = `/uploads/${folderName}/${fileName}`;
+
+      // Use the API route to serve the file
+      savedThumbnailPath = `/api/uploads/${folderName}/${fileName}`;
     }
 
     const updatedPost = await prisma.post.update({
@@ -95,11 +92,12 @@ export async function POST(
         category: { connect: { id: categoryId } },
       },
     });
+
     revalidatePath(`/${updatedPost.slug}`);
     revalidatePath("/");
+
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {
-    console.error("Error updating post:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
