@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export async function DELETE(
   req: Request,
@@ -25,8 +27,22 @@ export async function DELETE(
     const deletedPost = await prisma.post.delete({
       where: { id },
     });
+
+    if (deletedPost.thumbnail) {
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        deletedPost.thumbnail
+      );
+
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath); // Delete the file
+      }
+    }
+
     revalidatePath(`/${deletedPost.slug}`);
     revalidatePath("/");
+
     return NextResponse.json({
       message: `Post ${deletedPost.title} deleted successfully`,
     });
