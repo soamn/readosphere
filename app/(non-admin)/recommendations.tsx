@@ -10,7 +10,7 @@ export default async function RecommendationPage() {
 
   return (
     <>
-      <h2 className="text-4xl md:text-8xl px-4 sm:px-10 md:px-20  md:mt-32 sm:mt-16 ">
+      <h2 className="text-4xl md:text-8xl px-4 sm:px-10 md:px-20  md:mt-32 mt-16 ">
         Categories
       </h2>
 
