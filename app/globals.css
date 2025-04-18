@@ -141,7 +141,7 @@
 }
 
 .text-highlight {
-  @apply text-black underline underline-offset-5 hover:no-underline;
+  @apply text-black underline underline-offset-8 hover:no-underline;
 }
 .post {
   font-family: "PT Serif";
@@ -169,7 +169,9 @@
   list-style-type: decimal;
   margin-left: 1rem;
 }
-
+.post p {
+  @apply md:text-2xl lg:text-lg;
+}
 .post ul {
   list-style-type: disc;
   margin-left: 1rem;
