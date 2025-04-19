@@ -54,3 +54,17 @@ model Recommendation {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Homepage {
+  id             Int      @id @default(autoincrement())
+  heroImage      String?
+  featuredImage  String?
+  heroText1      String?
+  heroText2      String?
+  featuredText1  String?
+  featuredText2  String?
+  smallparagraph String?
+  aboutheading   String?
+  aboutparagraph String?
+  createdAt      DateTime @default(now())
+}

@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
+  
   try {
     const { name, description } = await req.json();
     if (!name)

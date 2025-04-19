@@ -3,7 +3,7 @@ import { Diamond, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useState, useRef } from "react";
 import Navigation from "./navigation";
-
+import { motion } from "framer-motion";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);

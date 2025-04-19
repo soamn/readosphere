@@ -42,6 +42,11 @@ const items = [
     url: "/admin/recommendations",
     icon: HandHeart,
   },
+  {
+    title: "Home Page",
+    url: "/admin/home",
+    icon: HandHeart,
+  },
 ];
 
 export function AppSidebar({ user }: { user: any }) {

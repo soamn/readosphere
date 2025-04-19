@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://readosphere.com"),
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     description: "book recommendations, reviews, and summaries",
+  },
+  alternates: {
+    canonical: "https://readosphere.com",
   },
 };
 
@@ -116,13 +120,7 @@ export const metadata: Metadata = {
 //   archives: ["https://readosphere.com/feed.xml"],
 
 //   // Canonical link (useful for duplicate pages)
-//   alternates: {
-//     canonical: "https://readosphere.com",
-//     languages: {
-//       "en-US": "https://readosphere.com/en-US",
-//       "fr-FR": "https://readosphere.com/fr-FR",
-//     },
-//   },
+//
 
 //   // App Links (for mobile app deep linking)
 //   appLinks: {
@@ -157,7 +155,36 @@ export default function Layout({
 }>) {
   return (
     <html lang="en">
-      <body className=" antialiase  ">{children}</body>
+      <body className=" antialiase  ">
+        <Script
+          id="jsonld-homepage"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              url: "https://readosphere.com",
+              name: "Readosphere",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://readosphere.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+              description:
+                "Readosphere is a blog dedicated to book recommendations, reviews, and summaries.",
+              publisher: {
+                "@type": "Organization",
+                name: "Readosphere",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://readosphere.com/logo.png",
+                },
+              },
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

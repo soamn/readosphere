@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
+import fs from "fs";
 
 export async function POST(
   req: NextRequest,
@@ -45,6 +46,19 @@ export async function POST(
       typeof thumbnail === "string" && thumbnail.startsWith("data:image");
 
     if (isBase64Image) {
+      const existingPost = await prisma.post.findUnique({
+        where: { id: Number(id) },
+        select: { thumbnail: true },
+      });
+
+      if (existingPost?.thumbnail) {
+        const oldRelativePath = existingPost.thumbnail.replace(/^\/api/, "");
+        const oldFilePath = path.join(process.cwd(), oldRelativePath);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+
       const matches = thumbnail.match(/^data:(.+);base64,(.+)$/);
       if (!matches) {
         return NextResponse.json(
@@ -71,11 +85,10 @@ export async function POST(
 
       const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
       const fileName = `${safeSlug}-${Date.now()}.${ext}`;
-      const filePath = path.join(uploadDir, fileName);
+      const newFilePath = path.join(uploadDir, fileName);
 
-      await writeFile(filePath, resizedBuffer);
+      await writeFile(newFilePath, resizedBuffer);
 
-      // Use the API route to serve the file
       savedThumbnailPath = `/api/uploads/${folderName}/${fileName}`;
     }
 
@@ -98,6 +111,7 @@ export async function POST(
 
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {
+    console.error("Error updating post:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

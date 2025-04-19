@@ -15,7 +15,7 @@ const isBrowserRequest = (req: NextRequest): boolean => {
 
 export async function GET(req: NextRequest) {
   if (isBrowserRequest(req)) {
-    return NextResponse.redirect(new URL("/not-found", req.url));
+    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
   try {
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       const folderName = `${now.getFullYear()}-${String(
         now.getMonth() + 1
       ).padStart(2, "0")}`;
-      const uploadDir = path.join(process.cwd(), "uploads", folderName); // not public
+      const uploadDir = path.join(process.cwd(), "uploads", folderName);
       await mkdir(uploadDir, { recursive: true });
 
       const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
@@ -94,7 +94,6 @@ export async function POST(req: NextRequest) {
 
       await writeFile(filePath, resizedBuffer);
 
-      // Save the path for the API route
       savedThumbnailPath = `/api/uploads/${folderName}/${fileName}`;
     }
 
