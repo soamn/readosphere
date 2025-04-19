@@ -17,13 +17,13 @@ async function main() {
       id: 1,
       heroText1: "Welcome to the site",
       heroText2: "Uncover stories",
-      heroImage: "hero-1745070056699",
+      heroImage: "hero-1745070056699.jpg",
       featuredText1: "Each word holds",
       featuredText2: "a story",
       smallparagraph: "This site is made with design in mind.",
       aboutheading: "About Us",
       aboutparagraph: "We create impactful digital experiences.",
-      featuredImage: "featured-1745070056699",
+      featuredImage: "featured-1745070056699.jpg",
     },
   });
 
