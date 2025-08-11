@@ -9,6 +9,7 @@ const CategoryPage = async (context: { params: Promise<{ id: number }> }) => {
   const posts = await prisma.post.findMany({
     where: {
       categoryId: Number(id),
+      published: true,
     },
     include: {
       category: true,
