@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/app/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,22 +13,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/app/components/ui/table";
 import ActionButtons from "@/app/admin/dashboard/actionButtons";
-import { Post } from "@/types/post";
 import Link from "next/link";
-import { cookies } from "next/headers";
+import { prisma } from "@/lib/prisma";
 
 const Dashboard = async () => {
-  const authToken = (await cookies()).get("auth_token")?.value;
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
-    cache: "no-store",
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-      Referer: `${process.env.NEXT_PUBLIC_API_URL}`,
+  const posts = await prisma.post.findMany({
+    include: {
+      category: true,
     },
   });
-  const posts: Post[] = await response.json();
   return (
     <div className="p-6 flex gap-5 flex-col">
       <Card className="max-w-52 bg-transparent">
@@ -43,7 +38,6 @@ const Dashboard = async () => {
           <TableCaption>A list of your posts.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
               <TableHead>Meta Title</TableHead>
               <TableHead>Meta Description</TableHead>
               <TableHead>Tags</TableHead>
@@ -57,9 +51,8 @@ const Dashboard = async () => {
           </TableHeader>
           <TableBody>
             {posts.length > 0 ? (
-              posts.map((post: Post) => (
+              posts.map((post: any) => (
                 <TableRow key={post.id}>
-                  <TableCell className="font-medium">{post.title}</TableCell>
                   <TableCell className="font-medium">
                     {post.metaTitle.slice(0, 20)}
                   </TableCell>
@@ -83,8 +76,6 @@ const Dashboard = async () => {
                   <TableCell>
                     <ActionButtons
                       postId={post.id}
-                      published={post.published}
-                      isFeatured={post.isFeatured}
                     />
                   </TableCell>
                 </TableRow>

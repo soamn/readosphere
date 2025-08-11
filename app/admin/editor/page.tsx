@@ -1,155 +1,29 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Studio from "./studio";
-import { z } from "zod";
-import { toast } from "sonner";
-import { Category } from "@/types/category";
-import { useRouter } from "next/navigation";
+import Editor from "@/app/components/editor";
+import React from "react";
 
-const PostSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  metaTitle: z.string().min(1, "Meta Title is Required"),
-  metaDescription: z.string().min(1, "Description is required"),
-  tags: z.string().min(1, "Tags are required"),
-  content: z.string().min(1, "Content is required"),
-  slug: z.string().min(1, "Slug is required"),
-  category: z.number().min(1, "Category is required"),
-  thumbnail: z.string(),
-});
+const page = () => {
+  const html = `
+  <h1 dir="ltr"><span style="
+  white-space: pre-wrap;">Supported Markdown</span></h1><h2><br></h2><p dir="ltr"><span
+  style="white-space: pre-wrap;">#</span><b><strong class="font-bold" style="white-space:
+  pre-wrap;"> For H1</strong></b></p><p dir="ltr"><b><strong class="font-bold"
+  style="white-space: pre-wrap;">## For h2</strong></b></p><p dir="ltr"><b><strong
+   class="font-bold" style="white-space: pre-wrap;">### For h3</strong></b></p><p><b><strong
+   class="font-bold" style="white-space: pre-wrap;">.</strong></b></p><p><b><strong
+   class="font-bold" style="white-space: pre-wrap;">.</strong></b></p><p><b><strong
+    class="font-bold" style="white-space: pre-wrap;">.</strong></b></p><p dir="ltr"><b><strong
+   class="font-bold" style="white-space: pre-wrap;">###### For h6</strong></b></p><p><br></p>
+   <p dir="ltr"><b><strong class="font-bold"
+   style="white-space: pre-wrap;">_(something)_ generates italic text</strong></b></p><p dir="ltr"><br></p><p dir="ltr"><b><strong class="font-bold" style="white-space: pre-wrap;">&gt; BlockQuote </strong></b></p>
+  <br/>
+   <p>Start Typing Your Content ....</p>
 
-type PostData = z.infer<typeof PostSchema>;
-
-const Page = () => {
-  const router = useRouter();
-  const [html, setHTML] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [metaTitle, setMetaTitle] = useState<string>("");
-  const [metaDescription, setMetaDescription] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
-  const [slug, setSlug] = useState<string>("");
-  const [categories, setCategories] = useState<Array<Category>>([]);
-  const [category, setCategory] = useState<string>("");
-  const [thumbnail, setThumbnail] = useState<string>("");
-  const [saving, setSaving] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true); // new loading state
-  const [errors, setErrors] = useState<{
-    title?: string;
-    metaTitle?: string;
-    metaDescription?: string;
-    tags?: string;
-    content?: string;
-    slug?: string;
-    category?: string;
-  }>({});
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch(`/api/categories/?ts=${Date.now()}`, {
-          cache: "no-store",
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch categories");
-        }
-
-        const data = await res.json();
-        const filteredCategories = data.map(
-          ({ id, name }: { id: number; name: string }) => ({ id, name })
-        );
-
-        if (filteredCategories.length > 0) {
-          setCategories(filteredCategories);
-          setLoading(false);
-        } else {
-          toast("No categories found");
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-        toast("Error fetching categories");
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  const data = {
-    title,
-    metaTitle,
-    metaDescription,
-    html,
-    tags,
-    slug,
-    categories,
-    category,
-    thumbnail,
-    errors,
-    setHTML,
-    setTitle,
-    setMetaTitle,
-    setMetaDescription,
-    setTags,
-    setSlug,
-    setCategory,
-    setThumbnail,
-  };
-
-  const handleSave = async () => {
-    const postData: PostData = {
-      title,
-      metaTitle,
-      metaDescription,
-      tags,
-      content: html,
-      slug,
-      category: Number(category),
-      thumbnail,
-    };
-
-    const validation = PostSchema.safeParse(postData);
-
-    if (!validation.success) {
-      const formattedErrors = validation.error.format();
-      setErrors({
-        title: formattedErrors.title?._errors?.[0],
-        metaTitle: formattedErrors.metaTitle?._errors?.[0],
-        metaDescription: formattedErrors.metaDescription?._errors?.[0],
-        tags: formattedErrors.tags?._errors?.[0],
-        content: formattedErrors.content?._errors?.[0],
-        slug: formattedErrors.slug?._errors?.[0],
-        category: formattedErrors.category?._errors?.[0],
-      });
-      return;
-    }
-
-    setErrors({});
-    try {
-      setSaving(true);
-      const response = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "Failed to create post");
-
-      toast("Post created successfully");
-      setSaving(false);
-      router.push("/admin/dashboard");
-    } catch (error) {
-      toast("Error creating post");
-      setSaving(false);
-    }
-  };
-
-  if (loading) return <div className="text-center">Loading...</div>;
-
-  return saving ? (
-    <div className="text-center">Saving...</div>
-  ) : (
-    <Studio data={data} handleSave={handleSave} />
+  `;
+  return (
+    <div className="relative overflow-clip m-auto max-w-5xl">
+      <Editor html={html} isUpdate={false} />
+    </div>
   );
 };
 
-export default Page;
+export default page;

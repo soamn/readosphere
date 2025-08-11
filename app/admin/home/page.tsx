@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
+import { Button } from "@/app/components/ui/button";
+import SmallEditor, { getEditorHtml } from "./simplerte";
 
 type HomePagePayload = {
   heroTextLine1: string;
@@ -18,16 +19,18 @@ type HomePagePayload = {
 };
 
 const HomePageSettings = () => {
-  // Raw file state (for potential future use)
   const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
-
-  // Always-base64 string states (used for preview and submit)
   const [heroImageBase64, setHeroImageBase64] = useState<string | null>(null);
   const [featuredImageBase64, setFeaturedImageBase64] = useState<string | null>(
     null
   );
-
+  const [originalHeroImageUrl, setOriginalHeroImageUrl] = useState<
+    string | null
+  >(null);
+  const [originalFeaturedImageUrl, setOriginalFeaturedImageUrl] = useState<
+    string | null
+  >(null);
   const [heroTextLine1, setHeroTextLine1] = useState("");
   const [heroTextLine2, setHeroTextLine2] = useState("");
   const [featuredHeading1, setFeaturedHeading1] = useState("");
@@ -38,9 +41,6 @@ const HomePageSettings = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
-  const editorRef = useRef<HTMLDivElement>(null);
 
   const toBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -56,7 +56,6 @@ const HomePageSettings = () => {
         const res = await fetch("/api/homepage");
         if (!res.ok) throw new Error("Failed to fetch homepage data");
         const data = await res.json();
-
         setHeroTextLine1(data.heroText1 || "");
         setHeroTextLine2(data.heroText2 || "");
         setFeaturedHeading1(data.featuredText1 || "");
@@ -64,23 +63,10 @@ const HomePageSettings = () => {
         setSmallParagraph(data.smallparagraph || "");
         setAboutHeading(data.aboutheading || "");
         setAboutParagraph(data.aboutparagraph || "");
-
-        // If the API returns base64 already, use it directly. Otherwise fetch and convert:
-        if (data.heroImage?.startsWith("data:image/")) {
-          setHeroImageBase64(data.heroImage);
-        } else if (data.heroImage) {
-          const blob = await fetch(`/${data.heroImage}`).then((r) => r.blob());
-          setHeroImageBase64(await toBase64(blob as File));
-        }
-
-        if (data.featuredImage?.startsWith("data:image/")) {
-          setFeaturedImageBase64(data.featuredImage);
-        } else if (data.featuredImage) {
-          const blob = await fetch(`/${data.featuredImage}`).then((r) =>
-            r.blob()
-          );
-          setFeaturedImageBase64(await toBase64(blob as File));
-        }
+        setOriginalHeroImageUrl(data.heroImage || null);
+        setOriginalFeaturedImageUrl(data.featuredImage || null);
+        setHeroImageBase64(null);
+        setFeaturedImageBase64(null);
       } catch (err: any) {
         setError(err.message || "Something went wrong");
       } finally {
@@ -105,17 +91,12 @@ const HomePageSettings = () => {
     }
   };
 
-  // Rich text formatting
-  const handleFormat = (cmd: string) => document.execCommand(cmd, false);
-  const handleInput = useCallback(() => {
-    setAboutParagraph(editorRef.current?.innerHTML || "");
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-    setSuccess(null);
+    const html = getEditorHtml();
+    const heroImageToSend = heroImageBase64 ?? originalHeroImageUrl;
+    const featuredImageToSend = featuredImageBase64 ?? originalFeaturedImageUrl;
 
     const payload: HomePagePayload = {
       heroTextLine1,
@@ -124,9 +105,9 @@ const HomePageSettings = () => {
       featuredHeading2,
       smallParagraph,
       aboutHeading,
-      aboutParagraph,
-      heroImage: heroImageBase64,
-      featuredImage: featuredImageBase64,
+      aboutParagraph: html,
+      heroImage: heroImageToSend,
+      featuredImage: featuredImageToSend,
     };
 
     try {
@@ -136,7 +117,13 @@ const HomePageSettings = () => {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Failed to update homepage");
-      setSuccess("Homepage updated successfully!");
+
+      setHeroImageBase64(null);
+      setFeaturedImageBase64(null);
+      setOriginalHeroImageUrl(heroImageToSend);
+      setOriginalFeaturedImageUrl(featuredImageToSend);
+      alert("Update Successfull");
+      window.location.reload();
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -151,9 +138,7 @@ const HomePageSettings = () => {
     <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h2 className="text-3xl font-bold mb-4">Update Home Page Settings</h2>
 
-      {success && <div className="text-green-600">{success}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="space-y-6">
         {/* Hero Image */}
         <div className="space-y-2">
           <label className="font-semibold">Hero Image</label>
@@ -164,13 +149,20 @@ const HomePageSettings = () => {
               handleImageChange(e, setHeroImageFile, setHeroImageBase64)
             }
           />
-          {heroImageBase64 && (
+          {/* Hero Image Preview */}
+          {heroImageBase64 ? (
             <img
               src={heroImageBase64}
               alt="Hero Preview"
               className="mt-2 w-full rounded shadow"
             />
-          )}
+          ) : originalHeroImageUrl ? (
+            <img
+              src={originalHeroImageUrl}
+              alt="Hero Preview"
+              className="mt-2 w-full rounded shadow"
+            />
+          ) : null}
         </div>
 
         {/* Featured Image */}
@@ -183,13 +175,19 @@ const HomePageSettings = () => {
               handleImageChange(e, setFeaturedImageFile, setFeaturedImageBase64)
             }
           />
-          {featuredImageBase64 && (
+          {featuredImageBase64 ? (
             <img
               src={featuredImageBase64}
               alt="Featured Preview"
               className="mt-2 w-full rounded shadow"
             />
-          )}
+          ) : originalFeaturedImageUrl ? (
+            <img
+              src={originalFeaturedImageUrl}
+              alt="Featured Preview"
+              className="mt-2 w-full rounded shadow"
+            />
+          ) : null}
         </div>
 
         {/* Text Inputs */}
@@ -235,37 +233,15 @@ const HomePageSettings = () => {
             onChange={(e) => setAboutHeading(e.target.value)}
           />
         </div>
-
-        {/* Rich Text Editor */}
-        <div className="space-y-2">
-          <label className="font-semibold">About Paragraph</label>
-          <div className="flex gap-2 mb-1">
-            {["bold", "italic", "underline"].map((cmd) => (
-              <button
-                key={cmd}
-                type="button"
-                onClick={() => handleFormat(cmd)}
-                className="px-2 py-1 bg-black text-white text-sm rounded hover:bg-gray-800"
-              >
-                {cmd === "bold" ? "B" : cmd === "italic" ? "I" : "U"}
-              </button>
-            ))}
-          </div>
-          <div
-            ref={editorRef}
-            contentEditable
-            onInput={handleInput}
-            className="border rounded-md p-3 min-h-[150px] bg-white text-black prose max-w-none outline-none focus:ring-2 focus:ring-gray-300"
-            dangerouslySetInnerHTML={{ __html: aboutParagraph }}
-          />
+        <label className="font-semibold">About Paragraph</label>
+        <div className="relative overflow-clip m-auto max-w-5xl">
+          <SmallEditor html={aboutParagraph} />
         </div>
-
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button onClick={handleSubmit} className="w-full" disabled={loading}>
           {loading ? "Saving..." : "Save Changes"}
         </Button>
-      </form>
+      </div>
     </div>
   );
 };
-
 export default HomePageSettings;

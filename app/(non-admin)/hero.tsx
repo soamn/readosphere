@@ -16,8 +16,8 @@ const Hero = (data: any) => {
   return (
     <>
       <section className="w-full h-[43rem] relative overflow-hidden ">
-        <Image
-          src={`/${heroImage}`}
+        <img
+          src={`${heroImage}`}
           alt="hero image"
           width={1920}
           height={1080}

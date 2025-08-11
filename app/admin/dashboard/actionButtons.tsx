@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -11,67 +11,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/app/components/ui/dialog";
 
 interface ActionButtonsProps {
   postId: number;
-  published: boolean;
-  isFeatured: boolean;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({
-  postId,
-  published,
-  isFeatured,
-}) => {
-  const [isPublished, setIsPublished] = useState(published);
-  const [featured, setFeatured] = useState(isFeatured);
+const ActionButtons: React.FC<ActionButtonsProps> = ({ postId }) => {
   const [loading, setLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const togglePublish = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/posts/${postId}/publish`, {
-        method: "PATCH",
-      });
-      if (response.ok) {
-        setIsPublished((prev) => !prev);
-        startTransition(() => {
-          router.refresh();
-        });
-      }
-    } catch (error) {
-      console.error("Error toggling publish status:", error);
-    }
-    setLoading(false);
-  };
-  const toggleFeatured = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/posts/${postId}/publish`, {
-        method: "PUT",
-      });
-      if (response.ok) {
-        setFeatured((prev) => !prev);
-        startTransition(() => {
-          router.refresh();
-        });
-      }
-    } catch (error) {
-      console.error("Error toggling publish status:", error);
-    }
-    setLoading(false);
-  };
-
   const deletePost = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/posts/${postId}/delete`, {
+      const response = await fetch(`/api/posts/${postId}`, {
         method: "DELETE",
       });
-      if (response.ok) {
+      const data = await response.json();
+      if (data.success) {
         startTransition(() => {
           router.refresh();
         });
@@ -85,44 +43,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   return (
     <div className="flex gap-2 justify-center items-center">
       <Button
-        onClick={() => router.push(`/admin/post/${postId}/edit`)}
+        onClick={() => router.push(`/admin/editor/${postId}`)}
         disabled={loading || isPending}
         variant="outline"
       >
         <Pencil />
       </Button>
-      <Button
-        onClick={togglePublish}
-        disabled={loading || isPending}
-        variant={isPublished ? "outline" : "default"}
-      >
-        {loading || isPending ? (
-          <>
-            <Loader2 className="animate-spin" />
-            {"Processing"}
-          </>
-        ) : isPublished ? (
-          "Unpublish"
-        ) : (
-          "Publish"
-        )}
-      </Button>
-      <Button
-        onClick={toggleFeatured}
-        disabled={loading || isPending}
-        variant={isPublished ? "outline" : "default"}
-      >
-        {loading || isPending ? (
-          <>
-            <Loader2 className="animate-spin" />
-            {"Processing"}
-          </>
-        ) : isFeatured ? (
-          "Featured"
-        ) : (
-          "Unfeatured"
-        )}
-      </Button>
+
       <Dialog>
         <DialogTrigger asChild>
           <Button className="text-red-500 " disabled={loading || isPending}>

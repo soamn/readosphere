@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import "../globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/app/components/ui/sidebar";
+import { AppSidebar } from "@/app/components/sidebar";
 import { Toaster } from "sonner";
 import { verifyAuthToken } from "@/utils/auth";
 import { Metadata } from "next";

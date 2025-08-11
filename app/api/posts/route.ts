@@ -4,6 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { mkdir, writeFile } from "fs/promises";
 import { revalidatePath } from "next/cache";
+import { put } from "@vercel/blob";
+import { uploadImageToVercelBlob } from "@/lib/uploadImageToVercelBlob";
+
 const isBrowserRequest = (req: NextRequest): boolean => {
   const userAgent = req.headers.get("user-agent") || "";
   const referer = req.headers.get("referer") || "";
@@ -34,67 +37,48 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const formData = await req.formData();
+  const metaTitle = formData.get("metaTitle") as string;
+  const metaDescription = formData.get("metaDescription") as string;
+  const slug = formData.get("slug") as string;
+  const metaTags = formData.get("tags") as string;
+  const content = formData.get("content") as string;
+  const categoryId = formData.get("categoryId") as string;
+  const file = formData.get("thumbnail") as File;
   try {
-    const {
-      title,
-      metaTitle,
-      metaDescription,
-      tags,
-      content,
-      slug,
-      category,
-      thumbnail,
-    } = await req.json();
-
-    if (
-      !title ||
-      !metaTitle ||
-      !metaDescription ||
-      !tags ||
-      !content ||
-      !slug ||
-      !category
-    ) {
-      return NextResponse.json(
-        { error: "All fields are required" },
-        { status: 400 }
-      );
+    const exisitingPost = await prisma.post.findFirst({
+      where: {
+        slug: slug,
+      },
+    });
+    if (exisitingPost) {
+      return NextResponse.json({
+        status: 403,
+        success: false,
+        message: "Post already exists with this slug",
+      });
     }
 
-    let savedThumbnailPath: string | null = null;
+    let savedThumbnailPath: string = "";
 
-    if (thumbnail) {
-      const matches = thumbnail.match(/^data:(.+);base64,(.+)$/);
-      if (!matches) {
-        return NextResponse.json(
-          { error: "Invalid image format" },
-          { status: 400 }
-        );
-      }
-
-      const mimeType = matches[1];
-      const ext = mimeType.split("/")[1];
-      const buffer = Buffer.from(matches[2], "base64");
-
-      const resizedBuffer = await sharp(buffer)
-        .resize(1200, 630, { fit: "cover" })
-        .toFormat(ext === "jpg" ? "jpeg" : ext)
-        .toBuffer();
+    if (file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const base64Data = buffer.toString("base64");
+      const dataUrl = `data:image/png;base64,${base64Data}`;
 
       const now = new Date();
       const folderName = `${now.getFullYear()}-${String(
         now.getMonth() + 1
       ).padStart(2, "0")}`;
-      const uploadDir = path.join(process.cwd(), "uploads", folderName);
-      await mkdir(uploadDir, { recursive: true });
 
       const safeSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, "");
-      const fileName = `${safeSlug}-${Date.now()}.${ext}`;
-      const filePath = path.join(uploadDir, fileName);
 
-      await writeFile(filePath, resizedBuffer);
-
-      savedThumbnailPath = `/api/uploads/${folderName}/${fileName}`;
+      savedThumbnailPath = await uploadImageToVercelBlob(
+        dataUrl,
+        folderName,
+        safeSlug
+      );
     }
 
     const adminUser = await prisma.user.findFirst({
@@ -107,24 +91,28 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
     const newPost = await prisma.post.create({
       data: {
-        title,
         metaTitle,
         metaDescription,
-        metaTags: tags,
+        metaTags,
         content,
         slug,
         thumbnail: savedThumbnailPath,
-        category: { connect: { id: Number(category) } },
+        category: { connect: { id: Number(categoryId) } },
         user: { connect: { id: adminUser.id } },
       },
     });
 
     revalidatePath("/");
-    return NextResponse.json(newPost, { status: 201 });
+    revalidatePath("/admin/dashboard");
+
+    return NextResponse.json({
+      status: 201,
+      message: "Successfully created post",
+    });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

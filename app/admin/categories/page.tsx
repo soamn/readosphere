@@ -9,19 +9,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+} from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
 import { Trash2, Pencil } from "lucide-react";
-import { Category } from "@/types/category";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/app/components/ui/dialog";
+import { Input } from "@/app/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import { Textarea } from "@/app/components/ui/textarea";
+import { Category } from "@prisma/client";
 
 const Page = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -147,7 +152,7 @@ const Page = () => {
                           onClick={() => {
                             setEditCategory(category);
                             setName(category.name);
-                            setDescription(category.description);
+                            setDescription(category.description as string);
                             setOpen(true);
                           }}
                           disabled={loading || deletingId !== null}

@@ -1,4 +1,4 @@
-import { Search } from "@/components/search";
+import { Search } from "@/app/components/search";
 import { ArrowRight } from "lucide-react";
 import React from "react";
 

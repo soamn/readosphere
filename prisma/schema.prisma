@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -19,22 +19,21 @@ model User {
 model Post {
   id              Int       @id @default(autoincrement())
   slug            String    @unique
-  title           String
   metaTitle       String
   metaDescription String
   metaTags        String
   content         String
   userId          Int
-  isFeatured      Boolean   @default(false)
   categoryId      Int?
   thumbnail       String?
+  isFeatured      Boolean   @default(false)
   published       Boolean   @default(true)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  category        Category? @relation(fields: [categoryId], references: [id])
   user            User      @relation(fields: [userId], references: [id])
-  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
-  @@index([title, metaTitle, metaTags])
+  @@index([metaTitle, metaTags])
 }
 
 model Category {

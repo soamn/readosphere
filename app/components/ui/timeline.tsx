@@ -152,7 +152,7 @@ const Timeline = ({ data }: { data: TimelineEntry[] }) => {
 
         <div
           style={{ height: `${height}px` }}
-          className="absolute left-1/2 -translate-x-1/2 top-38 w-[2px] hidden lg:block"
+          className="absolute bg-neutral-500 left-1/2 -translate-x-1/2 top-38 w-[2px] hidden lg:block"
         >
           <div className="absolute inset-0 w-[0.1px] bg-neutral-400 dark:bg-neutral-700" />
           {Array.from({ length: Math.floor(height / 120) }).map((_, i) => (

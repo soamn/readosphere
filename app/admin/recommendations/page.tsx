@@ -9,18 +9,23 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/app/components/ui/table";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Switch } from "@/components/ui/switch";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+} from "@/app/components/ui/dialog";
+import { Switch } from "@/app/components/ui/switch";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/app/components/ui/card";
 import { Pencil, Trash2 } from "lucide-react";
 import { z } from "zod";
 

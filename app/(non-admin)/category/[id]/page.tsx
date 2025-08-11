@@ -35,7 +35,7 @@ const CategoryPage = async (context: { params: Promise<{ id: number }> }) => {
             className="border border-gray-200 hover:border-black rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-all bg-white"
           >
             <h2 className="text-lg sm:text-xl font-semibold text-black mb-2">
-              {post.title}
+              {post.metaTitle}
             </h2>
             <p className="text-gray-500 text-sm sm:text-base line-clamp-3">
               {post.metaDescription}

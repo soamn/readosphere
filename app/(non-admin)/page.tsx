@@ -3,7 +3,6 @@ import Hero from "./hero";
 import RecommendationList from "./recommendations";
 import Featured from "./featured";
 import Catalogue from "./catalogue";
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
 const Page = async () => {
@@ -49,10 +48,10 @@ const Page = async () => {
           <div className="absolute w-1/3 h-[50%] bg-zinc-900 -top-2">
             <div className="absolute w-2 lg:h-screen h-[106%] bg-zinc-900 right-0 lg:top-2 top-full"></div>
           </div>
-          <Image
+          <img
             width={1920}
             height={1080}
-            src={`/${featuredImage}`}
+            src={`${featuredImage}`}
             alt="feature_image"
             className="w-full h-full object-cover"
           />

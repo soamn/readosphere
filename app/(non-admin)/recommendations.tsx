@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { Card } from "@/app/components/ui/card";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 

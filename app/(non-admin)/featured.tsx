@@ -1,4 +1,4 @@
-import Timeline from "@/components/ui/timeline";
+import Timeline from "@/app/components/ui/timeline";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import React from "react";

@@ -17,7 +17,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
+} from "@/app/components/ui/sidebar";
 import { verifyAuthToken } from "@/utils/auth";
 import { cookies } from "next/headers";
 

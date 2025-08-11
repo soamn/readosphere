@@ -1,14 +1,14 @@
 "use client";
 
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { Post } from "@/types/post";
+import { BentoGrid, BentoGridItem } from "@/app/components/ui/bento-grid";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/app/components/ui/skeleton";
 import Head from "next/head";
 
 import Image from "next/image";
+import { Post } from "@prisma/client";
 
 function SearchPageInner() {
   const searchParams = useSearchParams();
@@ -56,7 +56,7 @@ function SearchPageInner() {
           href={`https://gierlist.com/search?q=${encodeURIComponent(query)}`}
         />
       </Head>
-      <div className="max-w-3xl mx-auto mt-10">
+      <div className="max-w-3xl mx-auto mt-50">
         <h1 className="text-2xl font-bold mb-4">
           Search Results for "{query}"
         </h1>
@@ -76,14 +76,14 @@ function SearchPageInner() {
                     post.thumbnail ? (
                       <img
                         src={post.thumbnail}
-                        alt={post.title}
+                        alt={post.metaTitle}
                         width="300px"
                         height="150"
                       />
                     ) : (
                       <img
                         src={`http://readosphere.com/opengraph-image.png`}
-                        alt={post.title}
+                        alt={post.metaTitle}
                         width="300px"
                         height="150px"
                       />

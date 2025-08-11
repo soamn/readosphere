@@ -10,15 +10,14 @@ CREATE TABLE "User" (
 CREATE TABLE "Post" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "slug" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
     "metaTitle" TEXT NOT NULL,
     "metaDescription" TEXT NOT NULL,
     "metaTags" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
-    "isFeatured" BOOLEAN NOT NULL DEFAULT false,
     "categoryId" INTEGER,
     "thumbnail" TEXT,
+    "isFeatured" BOOLEAN NOT NULL DEFAULT false,
     "published" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
@@ -45,6 +44,21 @@ CREATE TABLE "Recommendation" (
     "updatedAt" DATETIME NOT NULL
 );
 
+-- CreateTable
+CREATE TABLE "Homepage" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "heroImage" TEXT,
+    "featuredImage" TEXT,
+    "heroText1" TEXT,
+    "heroText2" TEXT,
+    "featuredText1" TEXT,
+    "featuredText2" TEXT,
+    "smallparagraph" TEXT,
+    "aboutheading" TEXT,
+    "aboutparagraph" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -52,7 +66,7 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Post_slug_key" ON "Post"("slug");
 
 -- CreateIndex
-CREATE INDEX "Post_title_metaTitle_metaTags_idx" ON "Post"("title", "metaTitle", "metaTags");
+CREATE INDEX "Post_metaTitle_metaTags_idx" ON "Post"("metaTitle", "metaTags");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");

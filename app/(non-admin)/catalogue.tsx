@@ -22,14 +22,13 @@ const Catalogue = (data: any) => {
         className="w-full h-[30rem] md:h-[30rem]  object-cover  rounded-xl "
       />
 
-      {/* Content Overlay */}
-      <div className="absolute left-0 lg:left-10  w-full h-full flex p-3 z-30">
-        <div className="text-black max-w-xl p-4 md:p-10 lg:p-20  rounded-md ">
+      <div className="absolute left-0 lg:left-10  w-full h-full flex p-3 z-30 overflow-clip  ">
+        <div className="text-black w-full p-4 md:p-10 lg:p-20  rounded-md ">
           <h2 className="text-4xl md:text-6xl  lg:text-nowrap">
             {aboutheading}
           </h2>
           <p
-            className="text-md md:text-lg lg:text-2xl mt-4 lg:text-nowrap leading-8"
+            className="text-md md:text-lg lg:text-2xl mt-4 lg:text-nowrap w-full leading-8 "
             dangerouslySetInnerHTML={{ __html: aboutparagraph }}
           ></p>
         </div>

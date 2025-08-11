@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
         id: true,
         name: true,
         description: true,
+        
       },
     });
     return NextResponse.json(categories);
