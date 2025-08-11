@@ -48,7 +48,7 @@ export async function PUT(
   const slug = formData.get("slug") as string;
   const metaTags = formData.get("tags") as string;
   const published = formData.get("published") as string;
-  const featured = formData.get("featured") as string;
+  const featured = formData.get("isFeatured") as string;
   const content = formData.get("content") as string;
   const file = formData.get("thumbnail") as File;
   const categoryId = formData.get("categoryId") as string;
