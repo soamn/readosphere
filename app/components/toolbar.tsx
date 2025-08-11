@@ -189,7 +189,7 @@ export function Toolbar() {
             }}
             type="text"
             placeholder="https://example.com"
-            className="border rounded-lg p-2 h-full outline-0 "
+            className="border rounded-lg p-2 h-full outline-0 bg-black text-white"
           />
           <button
             onClick={() => {
